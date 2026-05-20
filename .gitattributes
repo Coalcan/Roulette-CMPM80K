@@ -1,0 +1,51 @@
+# Normalize line endings for all text files that git auto-detects
+* text=auto eol=lf
+
+*.gd        text eol=lf
+*.cs        text eol=lf
+*.tres      text eol=lf
+*.tscn      text eol=lf
+*.cfg       text eol=lf
+*.import    text eol=lf
+*.godot     text eol=lf
+*.json      text eol=lf
+*.md        text eol=lf
+*.txt       text eol=lf
+*.yml       text eol=lf
+*.yaml      text eol=lf
+*.svg       text eol=lf
+.gitignore  text eol=lf
+.gitattributes text eol=lf
+
+*.png       binary
+*.jpg       binary
+*.jpeg      binary
+*.gif       binary
+*.bmp       binary
+*.webp      binary
+*.ico       binary
+*.tga       binary
+*.exr       binary
+*.hdr       binary
+*.ogg       binary
+*.wav       binary
+*.mp3       binary
+*.flac      binary
+*.opus      binary
+*.ttf       binary
+*.otf       binary
+*.woff      binary
+*.woff2     binary
+*.fbx       binary
+*.glb       binary
+*.gltf      binary
+*.blend     binary
+*.obj       binary
+*.mtl       binary
+*.dae       binary
+*.pck       binary
+*.zip       binary
+*.exe       binary
+*.dll       binary
+*.so        binary
+*.dylib     binary
