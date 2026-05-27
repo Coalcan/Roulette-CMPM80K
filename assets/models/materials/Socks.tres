@@ -1,0 +1,7 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://brbkqdxwga8ov"]
+
+[resource]
+resource_name = "Socks"
+cull_mode = 2
+albedo_color = Color(0.739992, 0.690653, 0.690653, 1)
+roughness = 0.5

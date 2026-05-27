@@ -1,0 +1,7 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://cwbwf772he60e"]
+
+[resource]
+resource_name = "Eyes"
+cull_mode = 2
+albedo_color = Color(0.173322, 0.173322, 0.173322, 1)
+roughness = 0.5

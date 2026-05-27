@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://d0pghw6bfehvt"]
+
+[ext_resource type="PackedScene" uid="uid://cdpcyd5dxqcjh" path="res://assets/models/Male_Casual.fbx" id="1_model"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_vkcvo"]
+radius = 0.3
+height = 1.8
+
+[node name="Player" type="CharacterBody3D"]
+
+[node name="Male_Casual" parent="." instance=ExtResource("1_model")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+visible = false
+shape = SubResource("CapsuleShape3D_vkcvo")
