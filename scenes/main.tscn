@@ -1,9 +1,12 @@
-[gd_scene load_steps=9 format=3 uid="uid://culwwcn0pxexk"]
+[gd_scene format=3 uid="uid://culwwcn0pxexk"]
 
-[ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
+[ext_resource type="Script" uid="uid://bdh6jr5fy6pkq" path="res://scripts/main.gd" id="1_main"]
 [ext_resource type="Material" uid="uid://dhrarlrnp3nq0" path="res://assets/textures/WoodFloor041_2K-JPG.tres" id="2_67ukh"]
 [ext_resource type="PackedScene" uid="uid://csnnqvipsk3x0" path="res://scenes/Player.tscn" id="2_ne212"]
-[ext_resource type="Material" uid="uid://d4gbuct8sgomw" path="res://assets/textures/Bricks100_2K-JPG.tres" id="4_anp0x"]
+[ext_resource type="PackedScene" uid="uid://cjf3kdqedao3q" path="res://assets/models/Dining Set.glb" id="5_52b1b"]
+[ext_resource type="PackedScene" uid="uid://cdpcyd5dxqcjh" path="res://assets/models/Male_Casual.fbx" id="5_tbgi4"]
+[ext_resource type="Script" uid="uid://dycnjrf7p22my" path="res://scripts/WallStarer.gd" id="6_wallstarer"]
+[ext_resource type="PackedScene" uid="uid://g4bjww0f5x2e" path="res://assets/Revolver_1.fbx" id="7_revolver"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_10am8"]
 material = ExtResource("2_67ukh")
@@ -12,31 +15,98 @@ size = Vector2(50, 50)
 [sub_resource type="BoxShape3D" id="BoxShape3D_cslr5"]
 size = Vector3(50, 0.1, 50)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ebwl3"]
+cull_mode = 2
+albedo_color = Color(0.380392, 0.211765, 0.0745098, 1)
+
 [sub_resource type="PlaneMesh" id="PlaneMesh_xwjyi"]
-material = ExtResource("4_anp0x")
+material = SubResource("StandardMaterial3D_ebwl3")
 size = Vector2(32, 15)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_31dh0"]
 size = Vector3(1, 15, 32)
 
-[node name="Main" type="Node3D"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_jyhfs"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_roof"]
+cull_mode = 2
+albedo_color = Color(0.298039, 0.137255, 0.109804, 1)
+roughness = 0.9
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_jyhfs"]
+material = SubResource("StandardMaterial3D_roof")
+size = Vector2(25, 40)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jyhfs"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tbgi4"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jyhfs"]
+albedo_color = Color(0.38039216, 0.21176471, 0.07450981, 1)
+
+[sub_resource type="PrismMesh" id="PrismMesh_jyhfs"]
+material = SubResource("StandardMaterial3D_jyhfs")
+size = Vector3(32, 12, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tefeu"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_beam"]
+albedo_color = Color(0.282353, 0.152941, 0.0627451, 1)
+roughness = 0.95
+
+[sub_resource type="BoxMesh" id="BoxMesh_beam"]
+material = SubResource("StandardMaterial3D_beam")
+size = Vector3(32, 0.8, 0.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cord"]
+albedo_color = Color(0.05, 0.05, 0.05, 1)
+roughness = 0.8
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_cord"]
+material = SubResource("StandardMaterial3D_cord")
+top_radius = 0.04
+bottom_radius = 0.04
+height = 8.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_shade"]
+albedo_color = Color(0.15, 0.1, 0.05, 1)
+metallic = 0.6
+roughness = 0.4
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_shade"]
+material = SubResource("StandardMaterial3D_shade")
+top_radius = 0.15
+bottom_radius = 0.75
+height = 0.7
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_prompt"]
+shading_mode = 0
+billboard_mode = 1
+billboard_keep_scale = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_prompt"]
+material = SubResource("StandardMaterial3D_prompt")
+size = Vector2(0.6, 0.6)
+
+[node name="Main" type="Node3D" unique_id=752519563]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.165106)
 script = ExtResource("1_main")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1492048566]
 transform = Transform3D(0.352168, 0.454808, -0.818002, 0, 0.873993, 0.485939, 0.935937, -0.171132, 0.307793, 0, 11.8121, 0)
 shadow_enabled = true
 
-[node name="Ground" type="StaticBody3D" parent="."]
+[node name="Ground" type="StaticBody3D" parent="." unique_id=1250681544]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground" unique_id=1449168777]
 mesh = SubResource("PlaneMesh_10am8")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground" unique_id=129417958]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
 shape = SubResource("BoxShape3D_cslr5")
 
-[node name="Player" parent="." instance=ExtResource("2_ne212")]
+[node name="Player" parent="." unique_id=1690100993 instance=ExtResource("2_ne212")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -7.86578)
 
 [node name="Skeleton3D" parent="Player/Male_Casual/HumanArmature" index="0"]
 bones/1/position = Vector3(0.00308121, 0.000600924, -0.000382973)
@@ -121,48 +191,274 @@ bones/38/scale = Vector3(1, 1, 1)
 bones/40/position = Vector3(-0.00319619, 0.010965, 0.0180379)
 bones/40/rotation = Quaternion(0, 1.19209e-07, 0, 1)
 
-[node name="Wall" type="StaticBody3D" parent="."]
+[node name="Wall" type="StaticBody3D" parent="." unique_id=1013162319]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Wall"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Wall" unique_id=781285254]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 7.5, -16)
 mesh = SubResource("PlaneMesh_xwjyi")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Wall"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Wall" unique_id=939328556]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 7.5, -16.5)
 shape = SubResource("BoxShape3D_31dh0")
 
-[node name="Wall2" type="StaticBody3D" parent="."]
+[node name="Wall2" type="StaticBody3D" parent="." unique_id=890555286]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Wall2"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Wall2" unique_id=1784706776]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 7.5, -16)
 mesh = SubResource("PlaneMesh_xwjyi")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Wall2"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Wall2" unique_id=2107399797]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 7.5, -16.5)
 shape = SubResource("BoxShape3D_31dh0")
 
-[node name="Wall3" type="StaticBody3D" parent="."]
+[node name="Wall3" type="StaticBody3D" parent="." unique_id=864649754]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Wall3"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Wall3" unique_id=1381842304]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 7.5, -16)
 mesh = SubResource("PlaneMesh_xwjyi")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Wall3"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Wall3" unique_id=1420278416]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 7.5, -16.5)
 shape = SubResource("BoxShape3D_31dh0")
 
-[node name="Wall4" type="StaticBody3D" parent="."]
+[node name="Wall4" type="StaticBody3D" parent="." unique_id=1962370801]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Wall4"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Wall4" unique_id=264912543]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 7.5, -16)
 mesh = SubResource("PlaneMesh_xwjyi")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Wall4"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Wall4" unique_id=1213922757]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 7.5, -16.5)
 shape = SubResource("BoxShape3D_31dh0")
+
+[node name="Dining Set" parent="." unique_id=1954058469 instance=ExtResource("5_52b1b")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -32.8, 0, 22.598717)
+
+[node name="TableCollision" type="StaticBody3D" parent="Dining Set" unique_id=1127332619]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Dining Set/TableCollision" unique_id=1127332618]
+transform = Transform3D(50, 0, 0, 0, 13.000001, 0, 0, 0, 50, 328.42017, 16.756498, -225.60641)
+shape = SubResource("CylinderShape3D_jyhfs")
+
+[node name="Roof1" type="StaticBody3D" parent="." unique_id=1764882804]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Roof1" unique_id=1170779678]
+transform = Transform3D(0.80896574, -0.5878559, 0, 0.5878559, 0.80896574, 0, 0, 0, 1, -10.092, 19.410404, 0)
+mesh = SubResource("PlaneMesh_jyhfs")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Roof1" unique_id=342850750]
+transform = Transform3D(20.225426, -0.58778524, 0, 14.694632, 0.809017, 0, 0, 0, 40, -10.489119, 19.77601, 0)
+shape = SubResource("BoxShape3D_jyhfs")
+
+[node name="Roof2" type="StaticBody3D" parent="." unique_id=153286796]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.424376, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Roof2" unique_id=1164501008]
+transform = Transform3D(0.809017, 0.58778524, 0, -0.58778524, 0.809017, 0, 0, 0, 1, -21.3, 19.4, 0)
+ignore_occlusion_culling = true
+mesh = SubResource("PlaneMesh_jyhfs")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Roof2" unique_id=1028385517]
+transform = Transform3D(20.225426, 0.58778524, 0, -14.694632, 0.809017, 0, 0, 0, 40, -20.926838, 19.904045, 0)
+shape = SubResource("BoxShape3D_tbgi4")
+
+[node name="walltriangle" type="StaticBody3D" parent="." unique_id=184888516]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="walltriangle" unique_id=1351577271]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20.92874, -16.515657)
+mesh = SubResource("PrismMesh_jyhfs")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="walltriangle" unique_id=1185205341]
+transform = Transform3D(32, 0, 0, 0, 12, 0, 0, 0, 1, 0, 20.896637, -16.42031)
+shape = SubResource("BoxShape3D_tefeu")
+
+[node name="walltriangle2" type="StaticBody3D" parent="." unique_id=784142457]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 32.982777)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="walltriangle2" unique_id=432669962]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20.92874, -16.515657)
+mesh = SubResource("PrismMesh_jyhfs")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="walltriangle2" unique_id=336489382]
+transform = Transform3D(32, 0, 0, 0, 12, 0, 0, 0, 1, 0, 20.896637, -16.42031)
+shape = SubResource("BoxShape3D_tefeu")
+
+[node name="CeilingBeams" type="Node3D" parent="." unique_id=2000000001]
+
+[node name="Beam1" type="MeshInstance3D" parent="CeilingBeams" unique_id=2000000002]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 15, -8)
+mesh = SubResource("BoxMesh_beam")
+
+[node name="Beam2" type="MeshInstance3D" parent="CeilingBeams" unique_id=2000000003]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 15, 0)
+mesh = SubResource("BoxMesh_beam")
+
+[node name="Beam3" type="MeshInstance3D" parent="CeilingBeams" unique_id=2000000004]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 15, 8)
+mesh = SubResource("BoxMesh_beam")
+
+[node name="ChairSitPoints" type="Node3D" parent="." unique_id=2000000009]
+
+[node name="SitA" type="Marker3D" parent="ChairSitPoints" unique_id=2000000010 groups=["sit_points"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.113, 0.8, 0.183)
+
+[node name="SitB" type="Marker3D" parent="ChairSitPoints" unique_id=2000000011 groups=["sit_points"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.146, 0.8, 2.186)
+
+[node name="SitC" type="Marker3D" parent="ChairSitPoints" unique_id=2000000012 groups=["sit_points"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.113, 0.8, 0.146)
+
+[node name="SitD" type="Marker3D" parent="ChairSitPoints" unique_id=2000000013 groups=["sit_points"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.036, 0.8, -2.186)
+
+[node name="HangingLight" type="Node3D" parent="." unique_id=2000000005]
+
+[node name="Cord" type="MeshInstance3D" parent="HangingLight" unique_id=2000000006]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.75, 0)
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_cord")
+
+[node name="Shade" type="MeshInstance3D" parent="HangingLight" unique_id=2000000007]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 0)
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_shade")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="HangingLight" unique_id=2000000008]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.5, 0)
+light_color = Color(1, 0.901961, 0.741176, 1)
+light_energy = 16.0
+shadow_enabled = true
+omni_range = 18.0
+
+[node name="SitPrompt" type="Node3D" parent="." unique_id=2000000030]
+visible = false
+
+[node name="Square" type="MeshInstance3D" parent="SitPrompt" unique_id=2000000031]
+cast_shadow = 0
+mesh = SubResource("QuadMesh_prompt")
+
+[node name="E" type="Label3D" parent="SitPrompt" unique_id=2000000032]
+pixel_size = 0.002
+billboard = 1
+no_depth_test = true
+render_priority = 2
+modulate = Color(0, 0, 0, 1)
+text = "E"
+font_size = 200
+
+[node name="SeatHUD" type="CanvasLayer" parent="." unique_id=2000000050]
+
+[node name="Panel" type="PanelContainer" parent="SeatHUD" unique_id=2000000051]
+visible = false
+offset_left = 20.0
+offset_top = 20.0
+
+[node name="Label" type="Label" parent="SeatHUD/Panel" unique_id=2000000052]
+theme_override_font_sizes/font_size = 22
+text = "— SEATED —
+[F]  Pick up revolver
+[R]  Spin cylinder
+[Space]  Pull trigger
+[E]  Stand up"
+
+[node name="Gun" type="Node3D" parent="." unique_id=2000000040 groups=["gun"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+
+[node name="Revolver_1" parent="Gun" unique_id=1469845867 instance=ExtResource("7_revolver")]
+transform = Transform3D(0.6401097, -0.7682835, 3.3582737e-08, 0, -4.371139e-08, -1, 0.7682835, 0.6401097, -2.7980084e-08, -0.28413653, 0, -0.33259583)
+
+[node name="Male_Casual" parent="." unique_id=904322998 instance=ExtResource("5_tbgi4")]
+transform = Transform3D(1.6056349, 0, 1.1924497, 0, 2, 0, -1.1924497, 0, 1.6056349, 14.498, 0, 14.645)
+
+[node name="Skeleton3D" parent="Male_Casual/HumanArmature" index="0"]
+bones/1/position = Vector3(0.0038363924, 0.000600924, -0.0014867054)
+bones/1/rotation = Quaternion(0.13804384, 0.6825911, 0.70509213, -0.13363577)
+bones/1/scale = Vector3(1, 1, 1)
+bones/3/position = Vector3(1.0737895e-06, 0.020799644, 0.0028547025)
+bones/3/rotation = Quaternion(-0.0005175279, 0.0036429977, 2.4427642e-05, 0.9999933)
+bones/3/scale = Vector3(1, 1, 1)
+bones/4/position = Vector3(-2.0504987e-05, -0.0016270061, -0.0011267168)
+bones/4/rotation = Quaternion(-0.0992135, -2.6644452e-07, -4.4529372e-08, 0.99506617)
+bones/5/position = Vector3(2.96615e-13, 0.00393357, -3.68334e-10)
+bones/5/rotation = Quaternion(0.08057472, 4.3652716e-07, 4.9917126e-08, 0.9967487)
+bones/6/position = Vector3(5.35583e-17, 0.00770676, -6.28959e-13)
+bones/6/rotation = Quaternion(0.01124359, -8.3191196e-07, 2.76048e-09, 0.9999368)
+bones/6/scale = Vector3(1, 1, 1)
+bones/7/position = Vector3(3.66683e-16, 0.00952106, 3.81126e-10)
+bones/7/rotation = Quaternion(0.08210648, 8.078285e-06, 0.00014098364, 0.99662364)
+bones/8/position = Vector3(1.00235e-16, 0.00195344, -3.8147e-10)
+bones/8/rotation = Quaternion(-0.11539908, -0.0001984842, 0.0030009248, 0.9933147)
+bones/8/scale = Vector3(1, 1, 1)
+bones/10/position = Vector3(0.0024616907, 0.0048365323, 0.00030734454)
+bones/10/rotation = Quaternion(0.0747454, 0.0304808, -0.376362, 0.922949)
+bones/11/position = Vector3(-6.62937e-10, 0.00315858, -2.95312e-10)
+bones/11/rotation = Quaternion(-0.5641519, -0.31250528, -0.67322063, 0.36172795)
+bones/11/scale = Vector3(1, 1, 1)
+bones/12/position = Vector3(1.04571e-10, 0.00742473, -1.77068e-09)
+bones/12/rotation = Quaternion(-0.033604816, -0.017689278, -0.18155001, 0.98264825)
+bones/12/scale = Vector3(1, 1, 1)
+bones/13/position = Vector3(-1.97507e-10, 0.00821869, 2.56637e-09)
+bones/13/rotation = Quaternion(-0.091587186, 0.011811333, -0.0010549206, 0.99572647)
+bones/14/position = Vector3(-8.69495e-11, 0.0020212, 3.41664e-09)
+bones/14/rotation = Quaternion(0.034119435, -0.009062327, 0.000488344, 0.9993766)
+bones/14/scale = Vector3(1, 1, 1)
+bones/15/position = Vector3(3.16546e-11, 0.00209138, -4.4547e-09)
+bones/15/rotation = Quaternion(-0.6273518, 0.010712003, -0.10510431, 0.7715362)
+bones/15/scale = Vector3(1, 1, 1)
+bones/17/position = Vector3(0.0009553677, 0.00077047455, -0.00019032665)
+bones/17/rotation = Quaternion(0.1270507, 0.888615, -0.12711579, 0.42197534)
+bones/17/scale = Vector3(1, 1, 1)
+bones/18/position = Vector3(3.13254e-09, 0.00156703, 2.32114e-09)
+bones/18/rotation = Quaternion(0.4140074, 0.8379358, -0.17694926, -0.30846483)
+bones/18/scale = Vector3(1, 1, 1)
+bones/20/position = Vector3(-0.0023196507, 0.0048284633, 0.00037884043)
+bones/20/rotation = Quaternion(0.0747456, -0.0304802, 0.376362, 0.922949)
+bones/20/scale = Vector3(1, 1, 1)
+bones/21/position = Vector3(5.98602e-10, 0.00315858, -2.33222e-10)
+bones/21/rotation = Quaternion(-0.59656274, 0.35005078, 0.6368531, 0.34058124)
+bones/21/scale = Vector3(1, 1, 1)
+bones/22/position = Vector3(2.8277e-11, 0.00682555, 1.4999e-09)
+bones/22/rotation = Quaternion(-0.036638826, -0.035638805, 0.059278045, 0.9969321)
+bones/22/scale = Vector3(1, 1, 1)
+bones/23/position = Vector3(-3.05285e-10, 0.00831207, -3.50498e-09)
+bones/23/rotation = Quaternion(-0.08783252, -0.011821007, 0.0010111545, 0.9960646)
+bones/23/scale = Vector3(1, 1, 1)
+bones/24/position = Vector3(-8.21059e-11, 0.00213323, -2.92469e-09)
+bones/24/rotation = Quaternion(0.03343009, 0.009062433, -0.00047846162, 0.99939996)
+bones/24/scale = Vector3(1, 1, 1)
+bones/25/position = Vector3(-0.0012888646, -0.0007000994, -0.00016586224)
+bones/25/rotation = Quaternion(-0.19468419, 0.8634474, 0.034095462, 0.46410558)
+bones/25/scale = Vector3(1, 1, 1)
+bones/26/position = Vector3(-5.69887e-09, 0.00156703, -2.50463e-09)
+bones/26/rotation = Quaternion(-0.091932416, 0.85566485, 0.5031181, 0.079110794)
+bones/26/scale = Vector3(1, 1, 1)
+bones/28/position = Vector3(1.12929e-10, 0.00229244, 2.23542e-09)
+bones/28/rotation = Quaternion(-0.5675212, 0.020629605, 0.05819249, 0.8210407)
+bones/30/position = Vector3(0.00299645, 0.000337782, -0.00182561)
+bones/30/rotation = Quaternion(0.98162705, 0.054592136, -0.16253856, 0.08372246)
+bones/30/scale = Vector3(1, 1, 1)
+bones/31/position = Vector3(2.00564e-10, 0.00828461, 2.96977e-10)
+bones/31/rotation = Quaternion(0.23033878, 1.0766894e-08, -4.211051e-08, 0.97311056)
+bones/31/scale = Vector3(1, 1, 1)
+bones/33/position = Vector3(-0.00319737, 0.000337782, -0.00182562)
+bones/33/rotation = Quaternion(0.9938355, -0.01699944, -0.0094059585, 0.10914927)
+bones/33/scale = Vector3(1, 1, 1)
+bones/34/position = Vector3(-1.80906e-10, 0.00832634, 3.22476e-10)
+bones/34/rotation = Quaternion(0.24660206, -1.1111578e-07, 2.3544537e-08, 0.96911687)
+bones/34/scale = Vector3(1, 1, 1)
+bones/36/position = Vector3(0.008241552, 0.010823511, 0.013281265)
+bones/36/rotation = Quaternion(0, 1.19209e-07, 0, 1)
+bones/38/position = Vector3(-0.0039839763, 0.000600924, -0.000673433)
+bones/38/rotation = Quaternion(-0.08532006, 0.6906272, 0.7133943, 0.0826022)
+bones/38/scale = Vector3(1, 1, 1)
+bones/40/rotation = Quaternion(0, 1.19209e-07, 0, 1)
+
+[node name="WallStarer" type="Node" parent="Male_Casual" unique_id=2000000020]
+script = ExtResource("6_wallstarer")
 
 [editable path="Player"]
 [editable path="Player/Male_Casual"]
+[editable path="Male_Casual"]
