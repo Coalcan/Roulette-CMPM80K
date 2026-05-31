@@ -1,7 +1,5 @@
 extends Node
 
-# Creepy bystander: stands against the wall with his arms down (held on the idle
-# pose) while his head slowly rotates. Add this as a child of a Male_Casual instance.
 
 const IDLE_ANIM := "HumanArmature|Man_Idle"
 
@@ -18,9 +16,7 @@ func _ready() -> void:
 	var root := get_parent()
 	if root == null:
 		return
-
-	# Freeze the body in the idle pose so the arms hang at his sides instead of
-	# sticking out in the default rest/T-pose.
+		
 	var anim := root.find_child("AnimationPlayer", true, false) as AnimationPlayer
 	if anim and anim.has_animation(IDLE_ANIM):
 		anim.play(IDLE_ANIM)
