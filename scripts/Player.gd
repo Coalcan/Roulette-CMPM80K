@@ -32,6 +32,10 @@ const ZOOM_LERP := 10.0        # zoom smoothing
 @onready var camera: Camera3D = $Camera3D
 @onready var sit_prompt: Node3D = get_node_or_null("../SitPrompt")  # "press E" popup (sibling in Main)
 @onready var seat_hud: Control = get_node_or_null("../SeatHUD/Panel")  # top-left controls list while seated
+@onready var gun_hud: Control = get_node_or_null("../GunHUD/Panel")  # output while holding gun
+@onready var gun_hud_text := get_node_or_null("../GunHUD/Panel/Label") # text for output while holding gun
+
+signal player_died # signal that player died for other scripts
 
 var current_anim := ""
 var zoom_target := 1.0         # 1.0 = third person, 0.0 = first person
@@ -262,14 +266,17 @@ func _try_pickup_gun() -> void:
 	current_chamber = randi() % CHAMBERS
 	gun_seq = GunSeq.IDLE
 	raise_amount = 0.0
-	print("Picked up the revolver. [R] spin the cylinder, [Space] pull the trigger.")
+	if gun_hud and gun_hud_text:
+		gun_hud_text.text = "Picked up the revolver. [R] spin the cylinder, [Space] pull the trigger."
+		gun_hud.visible = true
 
 
 func _spin_barrel() -> void:
 	if not has_gun or gun_seq != GunSeq.IDLE:
 		return
 	current_chamber = randi() % CHAMBERS
-	print("You give the cylinder a spin... it rattles to a stop.")
+	if gun_hud and gun_hud_text:
+		gun_hud_text.text = "You give the cylinder a spin... it rattles to a stop."
 
 
 func _shoot() -> void:
@@ -302,14 +309,17 @@ func _fire() -> void:
 	var is_live := current_chamber == loaded_chamber
 	current_chamber = (current_chamber + 1) % CHAMBERS  # cylinder advances one notch
 	if is_live:
-		print("*BANG* — the live round fires. You're dead.")
+		if gun_hud and gun_hud_text:
+			gun_hud_text.text = "*BANG* — the live round fires. You're dead."
 		_die()
 	else:
-		print("*click* — empty chamber. You survive.")
+		if gun_hud and gun_hud_text:
+			gun_hud_text.text = "*click* — empty chamber. You survive."
 		gun_seq = GunSeq.LOWERING
 
 
 func _die() -> void:
+	player_died.emit()
 	gun_seq = GunSeq.DEAD
 	# Let the death animation take over the whole body (arm override stops while DEAD).
 	if anim_player and anim_player.has_animation("HumanArmature|Man_Death"):
@@ -332,6 +342,8 @@ func _stand_up() -> void:
 	_shoot_state_reset()
 	if seat_hud:
 		seat_hud.visible = false
+	if gun_hud:
+		gun_hud.visible = false
 	# Put the gun back on the table before getting up.
 	if has_gun and gun:
 		gun.reparent(get_parent(), false)
