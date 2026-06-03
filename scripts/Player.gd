@@ -10,8 +10,8 @@ const ANIM_SIT := "HumanArmature|Man_Sitting"   # preferred sitting clip (if the
 const RUN_SPEED := 1.5   # run animation playback multiplier (1.0 = normal)
 
 # sitting (press E near a chair)
-const PROMPT_RANGE := 5.0    # how close to a chair's sit point you must be to sit
-const SIT_RANGE := 5.0
+const PROMPT_RANGE := 6.0    # how close to a prompt you must be to see it
+const SIT_RANGE := 5.0		# how close to a chair's sit point you must be to sit
 const SIT_PITCH := -0.6   # camera tilt while seated, so the view looks down at the table
 const STAND_BACK := 1.5   # how far you step away from the table when standing up
 const PROMPT_HEIGHT := 2.8  # how high above the chair the "press E" popup floats
@@ -84,9 +84,10 @@ var has_gun := false
 @export var right_lowerarm_head_deg := Vector3(110, -40, 0)
 @export var debug_hold_at_head := false   # freeze the arm at the head pose to tune the angles
 
-const CHAMBERS := 6
-const RAISE_TIME := 0.5   # seconds to bring the gun up to the temple (and back down)
-const HOLD_TIME := 0.5    # suspense pause at the temple before the trigger resolves
+var LIVE := 1
+var CHAMBERS := 6
+var RAISE_TIME := 0.5   # seconds to bring the gun up to the temple (and back down)
+var HOLD_TIME := 0.5    # suspense pause at the temple before the trigger resolves
 
 enum GunSeq { IDLE, RAISING, HOLD, LOWERING, DEAD }
 var gun_seq := GunSeq.IDLE
@@ -313,11 +314,11 @@ func _fire() -> void:
 	current_chamber = (current_chamber + 1) % CHAMBERS  # cylinder advances one notch
 	if is_live:
 		if gun_hud and gun_hud_text:
-			gun_hud_text.text = "*BANG* — the live round fires. You're dead."
+			gun_hud_text.text = "*BANG* - the live round fires."
 		_die()
 	else:
 		if gun_hud and gun_hud_text:
-			gun_hud_text.text = "*click* — empty chamber. You survive."
+			gun_hud_text.text = "*click* - empty chamber."
 		gun_seq = GunSeq.LOWERING
 
 
@@ -476,3 +477,10 @@ func _play_anim(anim_name: String, speed := 1.0) -> void:
 		return
 	current_anim = anim_name
 	anim_player.play(anim_name, -1, speed)
+
+
+func _on_update_gun_values(rate, chance) -> void:
+	RAISE_TIME = rate/2
+	HOLD_TIME = rate/2
+	LIVE = chance[0]
+	CHAMBERS = chance[1]
