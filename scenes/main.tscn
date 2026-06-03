@@ -1,13 +1,19 @@
 [gd_scene format=3 uid="uid://culwwcn0pxexk"]
 
-[ext_resource type="Script" uid="uid://bvy00dkll574u" path="res://scenes/main.gd" id="1_o6xl0"]
+[ext_resource type="Script" uid="uid://bvy00dkll574u" path="res://scripts/main.gd" id="1_o6xl0"]
 [ext_resource type="Material" uid="uid://dhrarlrnp3nq0" path="res://assets/textures/WoodFloor041_2K-JPG.tres" id="2_67ukh"]
 [ext_resource type="PackedScene" uid="uid://csnnqvipsk3x0" path="res://scenes/Player.tscn" id="2_ne212"]
 [ext_resource type="PackedScene" uid="uid://cjf3kdqedao3q" path="res://assets/models/Dining Set.glb" id="5_52b1b"]
 [ext_resource type="PackedScene" uid="uid://cdpcyd5dxqcjh" path="res://assets/models/Male_Casual.fbx" id="5_tbgi4"]
 [ext_resource type="Script" uid="uid://dycnjrf7p22my" path="res://scripts/WallStarer.gd" id="6_wallstarer"]
 [ext_resource type="PackedScene" uid="uid://g4bjww0f5x2e" path="res://assets/Revolver_1.fbx" id="7_revolver"]
-[ext_resource type="Script" uid="uid://bqykuoi7nh4o6" path="res://assets/models/shop_keeper.gd" id="8_tipki"]
+[ext_resource type="Script" uid="uid://bqykuoi7nh4o6" path="res://scripts/shop_keeper.gd" id="8_tipki"]
+[ext_resource type="Texture2D" uid="uid://dv2it11ieimfx" path="res://assets/textures/Bricks100_2K-JPG_Roughness.jpg" id="9_85g3d"]
+[ext_resource type="Script" uid="uid://c3o4n55e8ywm7" path="res://scripts/shop_gun.gd" id="10_ya4ey"]
+[ext_resource type="PackedScene" uid="uid://ejfkg6p268kf" path="res://assets/Revolver_2.fbx" id="11_eb6dy"]
+[ext_resource type="PackedScene" uid="uid://ywp1dg0bnq1m" path="res://assets/Revolver_3.fbx" id="12_a8y0u"]
+[ext_resource type="PackedScene" uid="uid://c1r0x1jlm5iak" path="res://assets/Revolver_4.fbx" id="13_jkv2x"]
+[ext_resource type="PackedScene" uid="uid://chmx3j674fvom" path="res://assets/Revolver_5.fbx" id="14_jbj1t"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_10am8"]
 material = ExtResource("2_67ukh")
@@ -88,6 +94,13 @@ billboard_keep_scale = true
 [sub_resource type="QuadMesh" id="QuadMesh_prompt"]
 material = SubResource("StandardMaterial3D_prompt")
 size = Vector2(0.6, 0.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_choun"]
+albedo_texture = ExtResource("9_85g3d")
+
+[sub_resource type="BoxMesh" id="BoxMesh_ya4ey"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_eb6dy"]
 
 [node name="Main" type="Node3D" unique_id=752519563]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.165106)
@@ -392,11 +405,24 @@ theme_override_font_sizes/font_size = 22
 text = "Picked up the revolver. [R] spin the cylinder, [Space] pull the trigger."
 horizontal_alignment = 1
 
-[node name="Gun" type="Node3D" parent="." unique_id=2000000040 groups=["gun"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+[node name="Gun" type="Node3D" parent="." unique_id=2000000040]
+transform = Transform3D(0.8660253, -0.49999997, 2.1855694e-08, 0, -4.3711385e-08, -1, 0.49999997, 0.8660253, -3.7855173e-08, -0.5, 3, -0.5)
 
-[node name="Revolver_1" parent="Gun" unique_id=1469845867 instance=ExtResource("7_revolver")]
-transform = Transform3D(0.6401097, -0.7682835, 3.3582737e-08, 0, -4.371139e-08, -1, 0.7682835, 0.6401097, -2.7980084e-08, -0.28413653, 0, -0.33259583)
+[node name="Revolver_1" parent="Gun" unique_id=1469845867 groups=["table_guns"] instance=ExtResource("7_revolver")]
+transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 1, 0, 0, 0)
+visible = false
+
+[node name="Revolver_2" parent="Gun" unique_id=1015611025 groups=["table_guns"] instance=ExtResource("11_eb6dy")]
+visible = false
+
+[node name="Revolver_3" parent="Gun" unique_id=1985323904 groups=["table_guns"] instance=ExtResource("12_a8y0u")]
+visible = false
+
+[node name="Revolver_4" parent="Gun" unique_id=1733127667 groups=["table_guns"] instance=ExtResource("13_jkv2x")]
+visible = false
+
+[node name="Revolver_5" parent="Gun" unique_id=1382649212 groups=["table_guns"] instance=ExtResource("14_jbj1t")]
+visible = false
 
 [node name="Male_Casual" parent="." unique_id=904322998 instance=ExtResource("5_tbgi4")]
 transform = Transform3D(1.6056349, 0, 1.1924497, 0, 2, 0, -1.1924497, 0, 1.6056349, 14.498, 0, 14.645)
@@ -581,8 +607,132 @@ transform = Transform3D(-1.3113416e-07, 0, 3, 0, 3, 0, -3, 0, -1.3113416e-07, -1
 text = "Cash: $0
 "
 
+[node name="ShopPedestal_1" type="StaticBody3D" parent="." unique_id=1893073931]
+transform = Transform3D(1.5, 0, 0, 0, 2.5, 0, 0, 0, 1.5, -13, 1.25, 2.5)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ShopPedestal_1" unique_id=1173571009]
+material_override = SubResource("StandardMaterial3D_choun")
+mesh = SubResource("BoxMesh_ya4ey")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ShopPedestal_1" unique_id=1724189581]
+shape = SubResource("BoxShape3D_eb6dy")
+
+[node name="ShopPedestal_2" type="StaticBody3D" parent="." unique_id=851224659]
+transform = Transform3D(1.5, 0, 0, 0, 2.5, 0, 0, 0, 1.5, -12, 1.25, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ShopPedestal_2" unique_id=837735707]
+material_override = SubResource("StandardMaterial3D_choun")
+mesh = SubResource("BoxMesh_ya4ey")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ShopPedestal_2" unique_id=7607594]
+shape = SubResource("BoxShape3D_eb6dy")
+
+[node name="ShopPedestal_3" type="StaticBody3D" parent="." unique_id=1080210147]
+transform = Transform3D(1.5, 0, 0, 0, 2.5, 0, 0, 0, 1.5, -13, 1.25, -2.5)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ShopPedestal_3" unique_id=36108020]
+material_override = SubResource("StandardMaterial3D_choun")
+mesh = SubResource("BoxMesh_ya4ey")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ShopPedestal_3" unique_id=1027277791]
+shape = SubResource("BoxShape3D_eb6dy")
+
+[node name="GunPedestal" type="StaticBody3D" parent="." unique_id=1466865690]
+transform = Transform3D(1.5, 0, 0, 0, 2.5, 0, 0, 0, 1.5, -14, 1.25, -5)
+
+[node name="GunPurchasePrompt" type="Node3D" parent="GunPedestal" unique_id=503665989]
+transform = Transform3D(0.6666667, 0, 0, 0, 0.4, 0, 0, 0, 0.6666667, 0, 1.2, 0)
+visible = false
+
+[node name="Square" type="MeshInstance3D" parent="GunPedestal/GunPurchasePrompt" unique_id=1658809304]
+transform = Transform3D(-1.5298986e-07, 0, 1.5, 0, 1.5, 0, -3.5, 0, -6.556708e-08, 0, 0, 0)
+cast_shadow = 0
+mesh = SubResource("QuadMesh_prompt")
+
+[node name="E" type="Label3D" parent="GunPedestal/GunPurchasePrompt" unique_id=182801563]
+transform = Transform3D(1.5, 0, 8.742278e-08, 0, 1.5, 0, 8.742278e-08, 0, 3.5, 0, 0, 0)
+pixel_size = 0.002
+offset = Vector2(-200, 0)
+billboard = 1
+no_depth_test = true
+render_priority = 2
+modulate = Color(0, 0, 0, 1)
+text = "E"
+font_size = 200
+
+[node name="Name" type="Label3D" parent="GunPedestal/GunPurchasePrompt" unique_id=1500847862]
+transform = Transform3D(1, 0, 7.28523e-09, 0, 1, 0, 7.28523e-09, 0, 1.1666667, 0, 0, 0)
+pixel_size = 0.002
+offset = Vector2(200, 140)
+billboard = 1
+no_depth_test = true
+render_priority = 2
+modulate = Color(0, 0, 0, 1)
+text = "Revolver_0"
+font_size = 100
+
+[node name="Value" type="Label3D" parent="GunPedestal/GunPurchasePrompt" unique_id=115843606]
+transform = Transform3D(1, 0, 7.28523e-09, 0, 1, 0, 7.28523e-09, 0, 1.1666667, 0, 0, 0)
+pixel_size = 0.002
+offset = Vector2(200, 0)
+billboard = 1
+no_depth_test = true
+render_priority = 2
+modulate = Color(0, 0, 0, 1)
+text = "$0 per kill"
+font_size = 100
+
+[node name="Cost" type="Label3D" parent="GunPedestal/GunPurchasePrompt" unique_id=390792041]
+transform = Transform3D(1, 0, 7.28523e-09, 0, 1, 0, 7.28523e-09, 0, 1.1666667, 0, 0, 0)
+pixel_size = 0.002
+offset = Vector2(200, -140)
+billboard = 1
+no_depth_test = true
+render_priority = 2
+modulate = Color(0, 0, 0, 1)
+text = "Cost: $0"
+font_size = 100
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="GunPedestal" unique_id=1820829043]
+material_override = SubResource("StandardMaterial3D_choun")
+mesh = SubResource("BoxMesh_ya4ey")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GunPedestal" unique_id=879662444]
+shape = SubResource("BoxShape3D_eb6dy")
+
+[node name="ShopGun" type="Node3D" parent="GunPedestal" unique_id=2053724034]
+transform = Transform3D(0.6666667, 0, 0, 0, 0.4, 0, 0, 0, 0.6666667, 0, 0.7, 0)
+script = ExtResource("10_ya4ey")
+
+[node name="Revolver_2" parent="GunPedestal/ShopGun" unique_id=243028696 groups=["shop_guns"] instance=ExtResource("11_eb6dy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7514391, 0, 0)
+visible = false
+
+[node name="Revolver_3" parent="GunPedestal/ShopGun" unique_id=444147583 groups=["shop_guns"] instance=ExtResource("12_a8y0u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.75, 0, 0)
+visible = false
+
+[node name="Revolver_4" parent="GunPedestal/ShopGun" unique_id=384517156 groups=["shop_guns"] instance=ExtResource("13_jkv2x")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
+visible = false
+
+[node name="Revolver_5" parent="GunPedestal/ShopGun" unique_id=733780769 groups=["shop_guns"] instance=ExtResource("14_jbj1t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.75, 0, 0)
+visible = false
+
+[node name="Reroll Pedestal" type="StaticBody3D" parent="." unique_id=458154878]
+transform = Transform3D(1.5, 0, 0, 0, 2.5, 0, 0, 0, 1.5, -14, 1.25, 5)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Reroll Pedestal" unique_id=1015863042]
+material_override = SubResource("StandardMaterial3D_choun")
+mesh = SubResource("BoxMesh_ya4ey")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Reroll Pedestal" unique_id=1306805044]
+shape = SubResource("BoxShape3D_eb6dy")
+
 [connection signal="player_died" from="Player" to="." method="_on_player_died"]
 [connection signal="player_died" from="Player" to="Shop_Keeper" method="_on_player_died"]
+[connection signal="purchase_gun" from="Player" to="." method="_on_player_purchase_gun"]
 
 [editable path="Player"]
 [editable path="Player/Male_Casual"]

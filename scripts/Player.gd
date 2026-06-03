@@ -10,7 +10,8 @@ const ANIM_SIT := "HumanArmature|Man_Sitting"   # preferred sitting clip (if the
 const RUN_SPEED := 1.5   # run animation playback multiplier (1.0 = normal)
 
 # sitting (press E near a chair)
-const SIT_RANGE := 5.0    # how close to a chair's sit point you must be to sit
+const PROMPT_RANGE := 5.0    # how close to a chair's sit point you must be to sit
+const SIT_RANGE := 5.0
 const SIT_PITCH := -0.6   # camera tilt while seated, so the view looks down at the table
 const STAND_BACK := 1.5   # how far you step away from the table when standing up
 const PROMPT_HEIGHT := 2.8  # how high above the chair the "press E" popup floats
@@ -33,9 +34,12 @@ const ZOOM_LERP := 10.0        # zoom smoothing
 @onready var sit_prompt: Node3D = get_node_or_null("../SitPrompt")  # "press E" popup (sibling in Main)
 @onready var seat_hud: Control = get_node_or_null("../SeatHUD/Panel")  # top-left controls list while seated
 @onready var gun_hud: Control = get_node_or_null("../GunHUD/Panel")  # output while holding gun
-@onready var gun_hud_text := get_node_or_null("../GunHUD/Panel/Label") # text for output while holding gun
+@onready var gun_hud_text: Label = get_node_or_null("../GunHUD/Panel/Label") # text for output while holding gun
+@onready var gun_purchase_prompt: Node3D = get_node_or_null("../GunPedestal/GunPurchasePrompt") # purchase prompt for new gun
+@onready var gun: Node3D = get_node_or_null("../Gun") # the revolver on the table
 
 signal player_died # signal that player died for other scripts
+signal purchase_gun # signal to purchase new gun
 
 var current_anim := ""
 var zoom_target := 1.0         # 1.0 = third person, 0.0 = first person
@@ -70,7 +74,6 @@ var skeleton: Skeleton3D
 var arm_bone_idx := {}         # bone name -> index
 var arm_base := {}             # bone name -> sitting-pose rotation captured on sit
 var hand_holder: Node3D        # follows the right hand bone; the gun parents here when held
-var gun: Node3D                # the revolver on the table
 var gun_home: Transform3D      # the gun's resting transform on the table
 var has_gun := false
 
@@ -106,7 +109,6 @@ func _ready() -> void:
 			anim_player.get_animation(anim_name).loop_mode = Animation.LOOP_LINEAR
 	_play_anim(ANIM_IDLE)
 	_setup_skeleton()
-	gun = _first_in_group("gun")
 	if gun:
 		gun_home = gun.global_transform
 
@@ -147,8 +149,8 @@ func _resolve_sit_anim() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("sit"):
-		_toggle_sit()
+	if event.is_action_pressed("interact"):
+		_interact_event()
 		return
 	if event.is_action_pressed("pickup_gun"):
 		_try_pickup_gun()
@@ -177,18 +179,19 @@ func _unhandled_input(event: InputEvent) -> void:
 			cam_pitch -= event.relative.y * MOUSE_SENS
 			cam_pitch = clampf(cam_pitch, PITCH_MIN, PITCH_MAX)
 
-
-func _toggle_sit() -> void:
+func _interact_event() -> void:
 	if is_sitting:
 		_stand_up()
 	else:
-		_sit_down()
+		var target := _nearest_sit_point()
+		if target != null:
+			_sit_down(target)
+			return
+	
+	if global_position.distance_to(gun_purchase_prompt.global_position) < PROMPT_RANGE:
+		purchase_gun.emit()
 
-
-func _sit_down() -> void:
-	var target := _nearest_sit_point()
-	if target == null:
-		return
+func _sit_down(target : Node3D) -> void:
 	is_sitting = true
 	velocity = Vector3.ZERO
 	global_position = target.global_position
@@ -380,7 +383,7 @@ func _physics_process(delta: float) -> void:
 		_update_gun_sequence(delta)
 		_apply_seated_arms()
 		_update_camera(delta)
-		_update_sit_prompt()
+		_update_prompts()
 		return
 
 	if not is_on_floor():
@@ -410,8 +413,11 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 	_update_camera(delta)
-	_update_sit_prompt()
+	_update_prompts()
 
+func _update_prompts() -> void:
+	_update_sit_prompt()
+	_update_gun_purchase_prompt()
 
 # Float the "press E" popup above the nearest chair when one is in range,
 # and hide it while seated or when no chair is close.
@@ -427,6 +433,14 @@ func _update_sit_prompt() -> void:
 		sit_prompt.visible = true
 	else:
 		sit_prompt.visible = false
+
+func _update_gun_purchase_prompt() -> void:
+	if gun_purchase_prompt == null:
+		return
+	if global_position.distance_to(gun_purchase_prompt.global_position) < PROMPT_RANGE:
+		gun_purchase_prompt.visible = true
+	else:
+		gun_purchase_prompt.visible = false
 
 
 func _update_camera(delta: float) -> void:
