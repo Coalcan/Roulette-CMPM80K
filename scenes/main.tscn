@@ -109,8 +109,10 @@ size = Vector2(0.6, 0.6)
 albedo_texture = ExtResource("9_85g3d")
 
 [sub_resource type="BoxMesh" id="BoxMesh_ya4ey"]
+size = Vector3(1.5, 2.5, 1.5)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_eb6dy"]
+size = Vector3(1.5, 2.5, 1.5)
 
 [node name="Main" type="Node3D" unique_id=752519563]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.165106)
@@ -638,7 +640,7 @@ text = "Cash: $0
 "
 
 [node name="ShopPedestal_1" type="StaticBody3D" parent="." unique_id=1893073931]
-transform = Transform3D(1.5, 0, 0, 0, 2.5, 0, 0, 0, 1.5, -13, 1.25, 2.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 1.25, 2.5)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="ShopPedestal_1" unique_id=1173571009]
 material_override = SubResource("StandardMaterial3D_choun")
@@ -648,7 +650,7 @@ mesh = SubResource("BoxMesh_ya4ey")
 shape = SubResource("BoxShape3D_eb6dy")
 
 [node name="ShopPedestal_2" type="StaticBody3D" parent="." unique_id=851224659]
-transform = Transform3D(1.5, 0, 0, 0, 2.5, 0, 0, 0, 1.5, -12, 1.25, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 1.25, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="ShopPedestal_2" unique_id=837735707]
 material_override = SubResource("StandardMaterial3D_choun")
@@ -658,7 +660,7 @@ mesh = SubResource("BoxMesh_ya4ey")
 shape = SubResource("BoxShape3D_eb6dy")
 
 [node name="ShopPedestal_3" type="StaticBody3D" parent="." unique_id=1080210147]
-transform = Transform3D(1.5, 0, 0, 0, 2.5, 0, 0, 0, 1.5, -13, 1.25, -2.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 1.25, -2.5)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="ShopPedestal_3" unique_id=36108020]
 material_override = SubResource("StandardMaterial3D_choun")
@@ -668,10 +670,10 @@ mesh = SubResource("BoxMesh_ya4ey")
 shape = SubResource("BoxShape3D_eb6dy")
 
 [node name="GunPedestal" type="StaticBody3D" parent="." unique_id=1466865690]
-transform = Transform3D(1.5, 0, 0, 0, 2.5, 0, 0, 0, 1.5, -14, 1.25, -5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 1.25, -5)
 
 [node name="GunPurchasePrompt" type="Node3D" parent="GunPedestal" unique_id=503665989]
-transform = Transform3D(0.6666667, 0, 0, 0, 0.4, 0, 0, 0, 0.6666667, 0, 1.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.75, 0)
 visible = false
 
 [node name="Square" type="MeshInstance3D" parent="GunPedestal/GunPurchasePrompt" unique_id=1658809304]
@@ -753,7 +755,7 @@ mesh = SubResource("BoxMesh_ya4ey")
 shape = SubResource("BoxShape3D_eb6dy")
 
 [node name="ShopGun" type="Node3D" parent="GunPedestal" unique_id=2053724034]
-transform = Transform3D(0.6666667, 0, 0, 0, 0.4, 0, 0, 0, 0.6666667, 0, 0.7, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0)
 script = ExtResource("10_ya4ey")
 
 [node name="Revolver_2" parent="GunPedestal/ShopGun" unique_id=243028696 groups=["shop_guns"] instance=ExtResource("11_eb6dy")]
@@ -793,7 +795,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0, 0)
 visible = false
 
 [node name="Reroll Pedestal" type="StaticBody3D" parent="." unique_id=458154878]
-transform = Transform3D(1.5, 0, 0, 0, 2.5, 0, 0, 0, 1.5, -14, 1.25, 5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 1.25, 5)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Reroll Pedestal" unique_id=1015863042]
 material_override = SubResource("StandardMaterial3D_choun")
