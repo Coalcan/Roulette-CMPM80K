@@ -61,29 +61,35 @@ var sit_anim := ""             # resolved sitting animation name ("" if the mode
 # lift the right hand back up out of the table surface.
 @export var right_upperarm_deg := Vector3(0, 0, 10)
 @export var right_lowerarm_deg := Vector3(50, -65, 20)
+# Right arm raised with the gun at the temple (snapped to on pickup). Starts equal
+# to the table pose; raise these toward the head by tuning live.
+@export var right_upperarm_head_deg := Vector3(30, 0, 0)
+@export var right_lowerarm_head_deg := Vector3(-10, -80, -120)
+# Right wrist (MiddleHand.R). Table pose is neutral; tweak the head one so the gun
+# points naturally at the temple.
+@export var right_hand_deg := Vector3(0, 0, 0)
+@export var right_hand_head_deg := Vector3(0, 0, -30)
+@export var debug_hold_at_head := false   # freeze the arm at the head pose to tune the angles
 
 # --- Gun grip (where the revolver sits in the right hand) ----------------------
 @export var gun_grip_position := Vector3.ZERO
 @export var gun_grip_rotation_deg := Vector3.ZERO
 @export var gun_grip_scale := 0.01   # gun is scaled to this in-hand (its table scale is restored on drop)
+@export var muzzle_offset := Vector3(0, 0, -0.5)   # where the smoke puff spawns, relative to the right hand
 
 const HAND_BONE := "MiddleHand.R"
-const ARM_BONES := ["UpperArm.L", "LowerArm.L", "UpperArm.R", "LowerArm.R"]
+const ARM_BONES := ["UpperArm.L", "LowerArm.L", "UpperArm.R", "LowerArm.R", "MiddleHand.R"]
 
 var skeleton: Skeleton3D
+var bone_sim: PhysicalBoneSimulator3D   # ragdoll simulator (Godot 4.4+); inactive until death
 var arm_bone_idx := {}         # bone name -> index
 var arm_base := {}             # bone name -> sitting-pose rotation captured on sit
 var hand_holder: Node3D        # follows the right hand bone; the gun parents here when held
 var gun_home: Transform3D      # the gun's resting transform on the table
 var has_gun := false
+var muzzle_smoke: CPUParticles3D   # puff emitted when the gun actually fires
 
 # --- Russian-roulette sequence -------------------------------------------------
-# Right-arm pose with the gun raised to the temple. Tune like the table pose:
-# flip debug_hold_at_head on, run + sit + pick up, then scrub these in Remote.
-@export var right_upperarm_head_deg := Vector3(-80, 0, 40)
-@export var right_lowerarm_head_deg := Vector3(110, -40, 0)
-@export var debug_hold_at_head := false   # freeze the arm at the head pose to tune the angles
-
 var LIVE := 1
 var CHAMBERS := 6
 var RAISE_TIME := 0.5   # seconds to bring the gun up to the temple (and back down)
@@ -120,6 +126,11 @@ func _setup_skeleton() -> void:
 	skeleton = model.find_child("Skeleton3D", true, false) as Skeleton3D
 	if skeleton == null:
 		return
+	# The PhysicalBoneSimulator3D is created "active", which makes it override the
+	# animation every frame (breaks walking). Keep it off until we ragdoll on death.
+	bone_sim = skeleton.find_child("PhysicalBoneSimulator3D", true, false) as PhysicalBoneSimulator3D
+	if bone_sim:
+		bone_sim.active = false
 	for b in ARM_BONES:
 		arm_bone_idx[b] = skeleton.find_bone(b)
 	if skeleton.find_bone(HAND_BONE) != -1:
@@ -128,6 +139,60 @@ func _setup_skeleton() -> void:
 		skeleton.add_child(attach)
 		hand_holder = Node3D.new()
 		attach.add_child(hand_holder)
+	# Muzzle smoke lives on the Player (not the hand) so the puff stays put in the
+	# world when fired instead of riding the death animation.
+	muzzle_smoke = _make_muzzle_smoke()
+	add_child(muzzle_smoke)
+
+
+# A one-shot grey smoke burst (CPUParticles3D works on every renderer, including
+# Compatibility). Tune the spawn point with muzzle_offset; sizes are below.
+func _make_muzzle_smoke() -> CPUParticles3D:
+	var p := CPUParticles3D.new()
+	p.emitting = false
+	p.one_shot = true
+	p.amount = 40
+	p.lifetime = 1.0
+	p.explosiveness = 0.95
+	p.direction = Vector3(0, 1, 0)
+	p.spread = 55.0
+	p.initial_velocity_min = 0.6
+	p.initial_velocity_max = 1.8
+	p.gravity = Vector3(0, 0.4, 0)
+	p.scale_amount_min = 0.7
+	p.scale_amount_max = 1.5
+	var grow := Curve.new()
+	grow.add_point(Vector2(0, 0.5))
+	grow.add_point(Vector2(1, 1.3))
+	p.scale_amount_curve = grow
+	var ramp := Gradient.new()
+	ramp.set_color(0, Color(0.9, 0.9, 0.9, 0.9))
+	ramp.set_color(1, Color(0.7, 0.7, 0.7, 0.0))
+	p.color_ramp = ramp
+	var quad := QuadMesh.new()
+	quad.size = Vector2(0.6, 0.6)
+	var mat := StandardMaterial3D.new()
+	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	mat.billboard_mode = BaseMaterial3D.BILLBOARD_PARTICLES
+	mat.vertex_color_use_as_albedo = true
+	quad.material = mat
+	p.mesh = quad
+	return p
+
+
+func _emit_muzzle_smoke() -> void:
+	if muzzle_smoke == null:
+		push_warning("muzzle_smoke is null - particle creation failed")
+		return
+	if hand_holder == null:
+		return
+	# orthonormalized() keeps the hand's position + rotation but strips the bone's
+	# (large) scale, so muzzle_offset stays in world units instead of being flung away.
+	muzzle_smoke.global_position = hand_holder.global_transform.orthonormalized() * muzzle_offset
+	muzzle_smoke.restart()
+	muzzle_smoke.emitting = true
+	print("muzzle smoke fired at ", muzzle_smoke.global_position)
 
 
 func _first_in_group(group: String) -> Node3D:
@@ -242,6 +307,7 @@ func _apply_seated_arms() -> void:
 	_set_arm_pose("LowerArm.L", left_lowerarm_deg)
 	_set_arm_pose("UpperArm.R", right_upperarm_deg.lerp(right_upperarm_head_deg, t))
 	_set_arm_pose("LowerArm.R", right_lowerarm_deg.lerp(right_lowerarm_head_deg, t))
+	_set_arm_pose("MiddleHand.R", right_hand_deg.lerp(right_hand_head_deg, t))
 
 
 func _set_arm_pose(bone_name: String, deg: Vector3) -> void:
@@ -269,7 +335,7 @@ func _try_pickup_gun() -> void:
 	loaded_chamber = randi() % CHAMBERS
 	current_chamber = randi() % CHAMBERS
 	gun_seq = GunSeq.IDLE
-	raise_amount = 0.0
+	raise_amount = 1.0   # snap the arm straight up to the head, gun at the temple
 	if gun_hud and gun_hud_text:
 		gun_hud_text.text = "Picked up the revolver. [R] spin the cylinder, [Space] pull the trigger."
 		gun_hud.visible = true
@@ -284,29 +350,18 @@ func _spin_barrel() -> void:
 
 
 func _shoot() -> void:
-	# Pull the trigger: raise the gun to the temple, hold, then resolve.
 	if not has_gun or gun_seq != GunSeq.IDLE:
 		return
-	gun_seq = GunSeq.RAISING
+	gun_seq = GunSeq.HOLD
+	seq_timer = HOLD_TIME
 
 
-# Advances the raise-to-head -> hold -> fire -> lower sequence. Called every
-# frame while seated (see _physics_process).
+# Counts down the suspense hold, then fires. Called every frame while seated.
 func _update_gun_sequence(delta: float) -> void:
-	match gun_seq:
-		GunSeq.RAISING:
-			raise_amount = minf(raise_amount + delta / RAISE_TIME, 1.0)
-			if raise_amount >= 1.0:
-				gun_seq = GunSeq.HOLD
-				seq_timer = HOLD_TIME
-		GunSeq.HOLD:
-			seq_timer -= delta
-			if seq_timer <= 0.0:
-				_fire()
-		GunSeq.LOWERING:
-			raise_amount = maxf(raise_amount - delta / RAISE_TIME, 0.0)
-			if raise_amount <= 0.0:
-				gun_seq = GunSeq.IDLE
+	if gun_seq == GunSeq.HOLD:
+		seq_timer -= delta
+		if seq_timer <= 0.0:
+			_fire()
 
 
 func _fire() -> void:
@@ -315,17 +370,23 @@ func _fire() -> void:
 	if is_live:
 		if gun_hud and gun_hud_text:
 			gun_hud_text.text = "*BANG* - the live round fires."
+		_emit_muzzle_smoke()   # puff of smoke on a real shot
 		_die()
 	else:
 		if gun_hud and gun_hud_text:
 			gun_hud_text.text = "*click* - empty chamber."
-		gun_seq = GunSeq.LOWERING
+		# TODO: play the empty-click sound here (add an AudioStreamPlayer3D and .play()).
+		gun_seq = GunSeq.IDLE   # stay at the head, ready to spin/shoot again
 
 
 func _die() -> void:
 	player_died.emit()
 	gun_seq = GunSeq.DEAD
-	# Let the death animation take over the whole body (arm override stops while DEAD).
+	# NOTE: physics ragdoll doesn't work on this model — its skeleton carries a large
+	# baked scale (same reason gun_grip_scale is 0.01), and Godot can't simulate
+	# PhysicalBone3D under a scaled skeleton (the body tears apart / collapses). So we
+	# play the death clip instead. The PhysicalBoneSimulator3D is kept inactive in
+	# _setup_skeleton so it doesn't override the normal animations.
 	if anim_player and anim_player.has_animation("HumanArmature|Man_Death"):
 		current_anim = "HumanArmature|Man_Death"
 		anim_player.play("HumanArmature|Man_Death")
