@@ -150,7 +150,7 @@ func _resolve_sit_anim() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("Interact"):
+	if event.is_action_pressed("interact"):
 		_interact_event()
 		return
 	if event.is_action_pressed("pickup_gun"):
