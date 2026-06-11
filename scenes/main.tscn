@@ -39,6 +39,8 @@ size = Vector2(32, 15)
 size = Vector3(1, 15, 32)
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_jyhfs"]
+height = 26.0
+radius = 25.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_roof"]
 cull_mode = 2
@@ -50,8 +52,10 @@ material = SubResource("StandardMaterial3D_roof")
 size = Vector2(25, 40)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jyhfs"]
+size = Vector3(25, 0.5, 40)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_tbgi4"]
+size = Vector3(25, 0.5, 40)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jyhfs"]
 albedo_color = Color(0.38039216, 0.21176471, 0.07450981, 1)
@@ -61,6 +65,7 @@ material = SubResource("StandardMaterial3D_jyhfs")
 size = Vector3(32, 12, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_tefeu"]
+size = Vector3(32, 12, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_beam"]
 albedo_color = Color(0.282353, 0.152941, 0.0627451, 1)
@@ -127,7 +132,7 @@ shape = SubResource("BoxShape3D_cslr5")
 [node name="Player" parent="." unique_id=1690100993 instance=ExtResource("2_ne212")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -7.86578)
 
-[node name="Skeleton3D" parent="Player/Male_Casual/HumanArmature" index="0" unique_id=491158089]
+[node name="Skeleton3D" parent="Player/Male_Casual/HumanArmature" index="0"]
 bones/1/position = Vector3(0.00308121, 0.000600924, -0.000382973)
 bones/1/rotation = Quaternion(1.37867e-06, 0.69555, 0.718478, 1.46208e-06)
 bones/1/scale = Vector3(1, 1, 1)
@@ -263,7 +268,7 @@ transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -32.8, 0, 22.598717)
 [node name="TableCollision" type="StaticBody3D" parent="Dining Set" unique_id=1127332619]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Dining Set/TableCollision" unique_id=1127332618]
-transform = Transform3D(50, 0, 0, 0, 13.000001, 0, 0, 0, 50, 328.42017, 16.756498, -225.60641)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 328.42017, 16.756498, -225.60641)
 shape = SubResource("CylinderShape3D_jyhfs")
 
 [node name="Roof1" type="StaticBody3D" parent="." unique_id=1764882804]
@@ -273,7 +278,7 @@ transform = Transform3D(0.80896574, -0.5878559, 0, 0.5878559, 0.80896574, 0, 0, 
 mesh = SubResource("PlaneMesh_jyhfs")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Roof1" unique_id=342850750]
-transform = Transform3D(20.225426, -0.58778524, 0, 14.694632, 0.809017, 0, 0, 0, 40, -10.489119, 19.77601, 0)
+transform = Transform3D(0.80896574, -0.5878559, 0, 0.5878559, 0.80896574, 0, 0, 0, 1, -10.489119, 19.77601, 0)
 shape = SubResource("BoxShape3D_jyhfs")
 
 [node name="Roof2" type="StaticBody3D" parent="." unique_id=153286796]
@@ -285,7 +290,7 @@ ignore_occlusion_culling = true
 mesh = SubResource("PlaneMesh_jyhfs")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Roof2" unique_id=1028385517]
-transform = Transform3D(20.225426, 0.58778524, 0, -14.694632, 0.809017, 0, 0, 0, 40, -20.926838, 19.904045, 0)
+transform = Transform3D(0.809017, 0.58778524, 0, -0.58778524, 0.809017, 0, 0, 0, 1, -20.926838, 19.904045, 0)
 shape = SubResource("BoxShape3D_tbgi4")
 
 [node name="walltriangle" type="StaticBody3D" parent="." unique_id=184888516]
@@ -295,7 +300,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20.92874, -16.515657)
 mesh = SubResource("PrismMesh_jyhfs")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="walltriangle" unique_id=1185205341]
-transform = Transform3D(32, 0, 0, 0, 12, 0, 0, 0, 1, 0, 20.896637, -16.42031)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20.896637, -16.42031)
 shape = SubResource("BoxShape3D_tefeu")
 
 [node name="walltriangle2" type="StaticBody3D" parent="." unique_id=784142457]
@@ -306,7 +311,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20.92874, -16.515657)
 mesh = SubResource("PrismMesh_jyhfs")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="walltriangle2" unique_id=336489382]
-transform = Transform3D(32, 0, 0, 0, 12, 0, 0, 0, 1, 0, 20.896637, -16.42031)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20.896637, -16.42031)
 shape = SubResource("BoxShape3D_tefeu")
 
 [node name="CeilingBeams" type="Node3D" parent="." unique_id=2000000001]
@@ -452,7 +457,7 @@ visible = false
 [node name="Male_Casual" parent="." unique_id=904322998 instance=ExtResource("5_tbgi4")]
 transform = Transform3D(1.6056349, 0, 1.1924497, 0, 2, 0, -1.1924497, 0, 1.6056349, 14.498, 0, 14.645)
 
-[node name="Skeleton3D" parent="Male_Casual/HumanArmature" parent_id_path=PackedInt32Array(904322998, 1476431596) index="0" unique_id=491158089]
+[node name="Skeleton3D" parent="Male_Casual/HumanArmature" index="0"]
 bones/1/position = Vector3(0.0038363924, 0.000600924, -0.0014867054)
 bones/1/rotation = Quaternion(0.13804384, 0.6825911, 0.70509213, -0.13363577)
 bones/1/scale = Vector3(1, 1, 1)
@@ -542,7 +547,7 @@ script = ExtResource("6_wallstarer")
 transform = Transform3D(-3.4852823e-05, 0, 1, 0, 1, 0, -1, 0, -3.4852823e-05, -14.918926, 0, 0)
 script = ExtResource("8_tipki")
 
-[node name="Skeleton3D" parent="Shop_Keeper/HumanArmature" parent_id_path=PackedInt32Array(2001236395, 1476431596) index="0" unique_id=491158089]
+[node name="Skeleton3D" parent="Shop_Keeper/HumanArmature" index="0"]
 bones/1/position = Vector3(0.0038363924, 0.000600924, -0.0014867054)
 bones/1/rotation = Quaternion(0.13804384, 0.6825911, 0.70509213, -0.13363577)
 bones/1/scale = Vector3(1, 1, 1)
