@@ -1,8 +1,10 @@
 extends Node3D
 
 var cash := 0
+var total_cash := 0
 var deaths := 0
 var currentGun := 0
+var gambleUnlock := false
 
 @onready var cash_display = get_node_or_null("CashDisplay/Label")
 @onready var gun_purchase_prompt_name = get_node_or_null("GunPedestal/GunPurchasePrompt/Name")
@@ -10,13 +12,21 @@ var currentGun := 0
 @onready var gun_purchase_prompt_rate = get_node_or_null("GunPedestal/GunPurchasePrompt/Rate")
 @onready var gun_purchase_prompt_chance = get_node_or_null("GunPedestal/GunPurchasePrompt/Chance")
 @onready var gun_purchase_prompt_cost = get_node_or_null("GunPedestal/GunPurchasePrompt/Cost")
+@onready var death_screen_deaths = get_node_or_null("DeathScreen/Deaths")
+@onready var death_screen_earnings = get_node_or_null("DeathScreen/Earnings")
+
 
 signal updateGunValues
+signal unlockGamble
+signal gameOver
 
 const gunProgression = ["Revolver_1", "Revolver_2", "Revolver_3", "Revolver_4", "Revolver_5", "Pistol_1", "Pistol_2", "Pistol_3", "Pistol_4", "Pistol_5"]
 const gunValue = [1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
 const gunRate = [1.0, 1.0, 1.0, 1.0, 1.0, 0.8, 0.8, 0.8, 0.8, 0.8]
 const gunChance = [[1,6], [1,6], [1,6], [1,6], [1,6], [1,5], [1,5], [1,5], [1,5], [1,5]]
+
+const MISS_WIN_BONUS := 0.5
+const HIT_WIN_BONUS := 2.0
 
 func _ready() -> void:
 	_update_gun()
@@ -29,8 +39,17 @@ func _on_player_died() -> void:
 
 func _update_cash(amount : int) -> void:
 	cash += amount
+	if amount > 0:
+		total_cash += amount
 	if cash_display:
 		cash_display.text = "Cash: $" + str(cash)
+	if (not gambleUnlock) and cash > 7:
+		gambleUnlock = true
+		unlockGamble.emit()
+	if cash < 0:
+		gameOver.emit()
+		death_screen_deaths.text = "Deaths: " + String.num_int64(deaths)
+		death_screen_earnings.text = "Total Earnings: $" + String.num_int64(total_cash)
 
 func _get_gun_cost(i : int) -> int:
 	return floor(5 * pow(2, i))
@@ -83,3 +102,12 @@ func _on_player_purchase_gun() -> void:
 	currentGun += 1
 	_update_gun_pedestal()
 	_update_gun()
+
+func _on_player_gun_shoot(wager : int, choice : bool, result : bool) -> void:
+	if choice == result:
+		if choice:
+			_update_cash(floor(wager * HIT_WIN_BONUS))
+		else:
+			_update_cash(floor(wager * MISS_WIN_BONUS))
+	else:
+		_update_cash(-wager)

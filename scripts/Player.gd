@@ -34,12 +34,14 @@ const ZOOM_LERP := 10.0        # zoom smoothing
 @onready var sit_prompt: Node3D = get_node_or_null("../SitPrompt")  # "press E" popup (sibling in Main)
 @onready var seat_hud: Control = get_node_or_null("../SeatHUD/Panel")  # top-left controls list while seated
 @onready var gun_hud: Control = get_node_or_null("../GunHUD/Panel")  # output while holding gun
+@onready var gamble_hud: Control = get_node_or_null("../GambleHUD/Panel") # top-right controls list while seated
 @onready var gun_hud_text: Label = get_node_or_null("../GunHUD/Panel/Label") # text for output while holding gun
 @onready var gun_purchase_prompt: Node3D = get_node_or_null("../GunPedestal/GunPurchasePrompt") # purchase prompt for new gun
 @onready var gun: Node3D = get_node_or_null("../Gun") # the revolver on the table
 
 signal player_died # signal that player died for other scripts
 signal purchase_gun # signal to purchase new gun
+signal gun_shoot # signal that player shot gun (for gamble)
 
 var current_anim := ""
 var zoom_target := 1.0         # 1.0 = third person, 0.0 = first person
@@ -95,12 +97,18 @@ var CHAMBERS := 6
 var RAISE_TIME := 0.5   # seconds to bring the gun up to the temple (and back down)
 var HOLD_TIME := 0.5    # suspense pause at the temple before the trigger resolves
 
+var gambleUnlocked := false # becomes true when cash >= 8
+var WAGER := 0 # amount of money gambled
+var GAMBLE_CHOICE := false # false = miss, true = hit
+
 enum GunSeq { IDLE, RAISING, HOLD, LOWERING, DEAD }
 var gun_seq := GunSeq.IDLE
 var raise_amount := 0.0   # 0 = arm resting on table, 1 = gun at head
 var seq_timer := 0.0
 var loaded_chamber := -1  # which chamber holds the live round
 var current_chamber := 0  # chamber currently under the hammer
+
+var game_over := false
 
 
 
@@ -215,18 +223,34 @@ func _resolve_sit_anim() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("interact"):
-		_interact_event()
-		return
-	if event.is_action_pressed("pickup_gun"):
-		_try_pickup_gun()
-		return
-	if event.is_action_pressed("spin_barrel"):
-		_spin_barrel()
-		return
-	if event.is_action_pressed("shoot"):
-		_shoot()
-		return
+	if not game_over:
+		if event.is_action_pressed("interact"):
+			_interact_event()
+			return
+		if event.is_action_pressed("pickup_gun"):
+			_try_pickup_gun()
+			return
+		if event.is_action_pressed("spin_barrel"):
+			_spin_barrel()
+			return
+		if event.is_action_pressed("shoot"):
+			_shoot()
+			return
+		if event.is_action_pressed("gamble_hit") and gambleUnlocked:
+			_change_gamble_choice(true)
+			return
+		if event.is_action_pressed("gamble_miss") and gambleUnlocked:
+			_change_gamble_choice(false)
+			return
+		if event.is_action_pressed("gamble_clear") and gambleUnlocked:
+			_change_gamble_wager(-1)
+			return
+		if event is InputEventKey and gambleUnlocked:
+			if event.pressed:
+				var key = event.as_text_key_label()
+				if key.is_valid_int():
+					_change_gamble_wager(key.to_int())
+					return
 	if event is InputEventMouseButton:
 		match event.button_index:
 			MOUSE_BUTTON_WHEEL_UP:
@@ -282,6 +306,8 @@ func _sit_down(target : Node3D) -> void:
 	_capture_arm_base()
 	if seat_hud:
 		seat_hud.visible = true
+		if gamble_hud and gambleUnlocked:
+			gamble_hud.visible = true
 
 
 # Remember the sitting-pose rotation of each arm bone so the table pose can be
@@ -340,6 +366,27 @@ func _try_pickup_gun() -> void:
 		gun_hud_text.text = "Picked up the revolver. [R] spin the cylinder, [Space] pull the trigger."
 		gun_hud.visible = true
 
+func _change_gamble_choice(choice : bool) -> void:
+	if not is_sitting:
+		return
+	GAMBLE_CHOICE = choice
+	if gun_hud and gun_hud_text:
+		if choice:
+			gun_hud_text.text = "You believe the next bullet is live."
+		else:
+			gun_hud_text.text = "You believe the next bullet is blank."
+
+func _change_gamble_wager(amount : int) -> void:
+	if not is_sitting:
+		return
+	if amount == -1:
+		WAGER = 0
+		if gun_hud and gun_hud_text:
+			gun_hud_text.text = "You second guess your wager, and back out."
+	else:
+		WAGER += amount
+		if gun_hud and gun_hud_text:
+			gun_hud_text.text = "You increase your wager to " + String.num_int64(WAGER) + " dollars."
 
 func _spin_barrel() -> void:
 	if not has_gun or gun_seq != GunSeq.IDLE:
@@ -367,16 +414,30 @@ func _update_gun_sequence(delta: float) -> void:
 func _fire() -> void:
 	var is_live := current_chamber == loaded_chamber
 	current_chamber = (current_chamber + 1) % CHAMBERS  # cylinder advances one notch
+	gun_shoot.emit(WAGER, GAMBLE_CHOICE, is_live)
 	if is_live:
 		if gun_hud and gun_hud_text:
-			gun_hud_text.text = "*BANG* - the live round fires."
+			if WAGER == 0:
+				gun_hud_text.text = "*BANG* - the live round fires."
+			else:
+				if GAMBLE_CHOICE:
+					gun_hud_text.text = "*BANG* - you were correct."
+				else:
+					gun_hud_text.text = "*BANG* - you were incorrect."
 		_emit_muzzle_smoke()   # puff of smoke on a real shot
 		_die()
 	else:
 		if gun_hud and gun_hud_text:
-			gun_hud_text.text = "*click* - empty chamber."
+			if WAGER == 0:
+				gun_hud_text.text = "*click* - empty chamber."
+			else:
+				if GAMBLE_CHOICE:
+					gun_hud_text.text = "*click* - you were incorrect."
+				else:
+					gun_hud_text.text = "*click* - you were correct."
 		# TODO: play the empty-click sound here (add an AudioStreamPlayer3D and .play()).
 		gun_seq = GunSeq.IDLE   # stay at the head, ready to spin/shoot again
+	WAGER = 0
 
 
 func _die() -> void:
@@ -407,8 +468,10 @@ func _stand_up() -> void:
 	_shoot_state_reset()
 	if seat_hud:
 		seat_hud.visible = false
-	if gun_hud:
+	if gun_hud and not game_over:
 		gun_hud.visible = false
+	if gamble_hud and gambleUnlocked:
+		gamble_hud.visible = false
 	# Put the gun back on the table before getting up.
 	if has_gun and gun:
 		gun.reparent(get_parent(), false)
@@ -545,3 +608,28 @@ func _on_update_gun_values(rate, chance) -> void:
 	HOLD_TIME = rate/2
 	LIVE = chance[0]
 	CHAMBERS = chance[1]
+
+
+func _on_unlock_gamble() -> void:
+	gambleUnlocked = true
+	game_over = true
+	if gun_hud and gun_hud_text:
+		await get_tree().create_timer(1.5).timeout
+		gun_hud_text.text = "You have unlocked the ability to gamble."
+		await get_tree().create_timer(3.0).timeout
+		gun_hud_text.text = "Be wary, going into debt has consequences..."
+		await get_tree().create_timer(3.0).timeout
+		gun_hud.visible = false
+		game_over = false
+
+
+func _on_game_over() -> void:
+	game_over = true
+	_stand_up()
+	if gun_hud and gun_hud_text:
+		await get_tree().create_timer(0.5).timeout
+		gun_hud_text.text = "You gambled too much, and are now in debt."
+		await get_tree().create_timer(3.0).timeout
+		gun_hud_text.text = "Unfortuantely for you, the house always wins."
+		await get_tree().create_timer(3.0).timeout
+		gun_hud.visible = false
