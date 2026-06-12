@@ -7,35 +7,78 @@ var currentGun := 0
 var gambleUnlock := false
 
 @onready var cash_display = get_node_or_null("CashDisplay/Label")
-@onready var gun_purchase_prompt_name = get_node_or_null("GunPedestal/GunPurchasePrompt/Name")
-@onready var gun_purchase_prompt_value = get_node_or_null("GunPedestal/GunPurchasePrompt/Value")
-@onready var gun_purchase_prompt_rate = get_node_or_null("GunPedestal/GunPurchasePrompt/Rate")
-@onready var gun_purchase_prompt_chance = get_node_or_null("GunPedestal/GunPurchasePrompt/Chance")
-@onready var gun_purchase_prompt_cost = get_node_or_null("GunPedestal/GunPurchasePrompt/Cost")
 @onready var death_screen_deaths = get_node_or_null("DeathScreen/Deaths")
 @onready var death_screen_earnings = get_node_or_null("DeathScreen/Earnings")
 
+@onready var pedestal_0 : Node3D = get_node_or_null("ShopPedestal_0")
+@onready var pedestal_1 : Node3D = get_node_or_null("ShopPedestal_1")
+@onready var pedestal_2 : Node3D = get_node_or_null("ShopPedestal_2")
+@onready var pedestal_3 : Node3D = get_node_or_null("ShopPedestal_3")
+@onready var pedestal_4 : Node3D = get_node_or_null("ShopPedestal_4")
+var pedestals
 
 signal updateGunValues
 signal unlockGamble
 signal gameOver
 
-const gunProgression = ["Revolver_1", "Revolver_2", "Revolver_3", "Revolver_4", "Revolver_5", "Pistol_1", "Pistol_2", "Pistol_3", "Pistol_4", "Pistol_5"]
-const gunValue = [1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
-const gunRate = [1.0, 1.0, 1.0, 1.0, 1.0, 0.8, 0.8, 0.8, 0.8, 0.8]
-const gunChance = [[1,6], [1,6], [1,6], [1,6], [1,6], [1,5], [1,5], [1,5], [1,5], [1,5]]
+const gunNames = ["Revolver","Pistol","SubmachineGun","AssaultRifle","Shotgun"]
+const groupNames = ["revolvers", "pistols", "smgs", "rifles", "shotguns"]
+
+const revolver_value = [1, 2, 3, 5, 8]
+const revolver_rate = [1.0, 1.0, 1.0, 0.9, 0.8]
+const revolver_chance = [6, 6, 6, 6, 6]
+const revolver_cost = [0, 5, 10, 20, 40]
+
+const pistol_value = [5, 8, 13, 21, 34]
+const pistol_rate = [1.2, 1.2, 1.1, 1.0, 0.9]
+const pistol_chance = [5, 5, 5, 5, 5]
+const pistol_cost = [30, 60, 120, 240, 480]
+
+const smg_value = [3, 8, 21, 55, 144]
+const smg_rate = [0.25, 0.25, 0.25, 0.25, 0.2]
+const smg_chance = [20, 20, 18, 16, 12]
+const smg_cost = [100, 200, 400, 800, 1600]
+
+const ar_value = [34, 55, 89, 144, 233]
+const ar_rate = [0.5, 0.5, 0.5, 0.45, 0.4]
+const ar_chance = [15, 15, 12, 10, 8]
+const ar_cost = [500, 1000, 2000, 4000, 8000]
+
+const shotgun_value = [144, 233, 377, 610, 987]
+const shotgun_rate = [2.0, 1.8, 1.6, 1.4, 1.2]
+const shotgun_chance = [4, 4, 4, 3, 2]
+const shotgun_cost = [2500, 5000, 10000, 20000, 40000]
+
+var gun_info = [
+	[revolver_value, revolver_rate, revolver_chance, revolver_cost, 0],
+	[pistol_value, pistol_rate, pistol_chance, pistol_cost, -1],
+	[smg_value, smg_rate, smg_chance, smg_cost, -1],
+	[ar_value, ar_rate, ar_chance, ar_cost, -1],
+	[shotgun_value, shotgun_rate, shotgun_chance, shotgun_cost, -1]
+]
 
 const MISS_WIN_BONUS := 0.5
 const HIT_WIN_BONUS := 2.0
 
 func _ready() -> void:
+	while true:
+		if pedestal_0 and pedestal_1 and pedestal_2 and pedestal_3 and pedestal_4:
+			break
+		await get_tree().create_timer(1.0).timeout
+	pedestals = [pedestal_0, pedestal_1, pedestal_2, pedestal_3, pedestal_4]
 	_update_gun()
-	_update_gun_pedestal()
+	_update_all_pedestals()
 	print("Roulette-CMPM80K loaded")
 
 func _on_player_died() -> void:
 	deaths += 1
-	_update_cash(gunValue[currentGun])
+	_update_cash(_get_gun_info(currentGun)[0])
+	
+func _get_gun_info(gun : int):
+	var upg = gun_info[gun][4]
+	if upg < 0:
+		upg = 0
+	return [gun_info[gun][0][upg], gun_info[gun][1][upg], gun_info[gun][2][upg], gun_info[gun][3][upg], gun_info[gun][4]]
 
 func _update_cash(amount : int) -> void:
 	cash += amount
@@ -51,56 +94,88 @@ func _update_cash(amount : int) -> void:
 		death_screen_deaths.text = "Deaths: " + String.num_int64(deaths)
 		death_screen_earnings.text = "Total Earnings: $" + String.num_int64(total_cash)
 
-func _get_gun_cost(i : int) -> int:
-	return floor(5 * pow(2, i))
-
-func _update_gun_pedestal() -> void:
-	var nextGun = currentGun + 1
-	
-	if (nextGun >= gunProgression.size()):
-		for node in get_tree().get_nodes_in_group("shop_guns"):
-			node.visible = false
-			
-		if gun_purchase_prompt_name:
-			gun_purchase_prompt_name.text = "MAX GUN"
-		if gun_purchase_prompt_value:
-			gun_purchase_prompt_value.visible = false
-		if gun_purchase_prompt_rate:
-			gun_purchase_prompt_rate.visible = false
-		if gun_purchase_prompt_chance:
-			gun_purchase_prompt_chance.visible = false
-		if gun_purchase_prompt_cost:
-			gun_purchase_prompt_cost.visible = false
-			
+func _update_gun_pedestal(num : int) -> void:
+	var pedestal = pedestals[num]
+	if not pedestal:
 		return
-		
-	var gunName = gunProgression[nextGun]
-	for node in get_tree().get_nodes_in_group("shop_guns"):
-		node.visible = node.name == gunName
 	
-	if gun_purchase_prompt_name:
-		gun_purchase_prompt_name.text = str(gunProgression[nextGun])
-	if gun_purchase_prompt_value:
-		gun_purchase_prompt_value.text = "$" + str(gunValue[nextGun]) + " per kill"
-	if gun_purchase_prompt_rate:
-		gun_purchase_prompt_rate.text = "Rate: " + str(gunRate[nextGun]) + "s"
-	if gun_purchase_prompt_chance:
-		gun_purchase_prompt_chance.text = "Chance: " + str(gunChance[nextGun][0]) + "/" + str(gunChance[nextGun][1])
-	if gun_purchase_prompt_cost:
-		gun_purchase_prompt_cost.text = "Cost: $" + str(_get_gun_cost(currentGun))
+	var info = _get_gun_info(num)
+	var gunName = gunNames[num] + "_"
+	if info[4] < 0:
+		gunName += str(info[4] + 2)
+	else:
+		gunName += str(info[4] + 1)
+	var group = groupNames[num]
+			
+	for node in get_tree().get_nodes_in_group(group):
+		node.visible = node.name == gunName
+				
+	var prompt = pedestal.find_child("GunPurchasePrompt_" + str(num), true)
+	if not prompt:
+		return
+	var value = prompt.find_child("Value", true)
+	var rate = prompt.find_child("Rate", true)
+	var chance = prompt.find_child("Chance", true)
+	var cost = prompt.find_child("Cost", true)
+	var E = prompt.find_child("E", true)
+	if value:
+		value.text = "$" + str(info[0]) + " per kill"
+	if rate:
+		rate.text = "Rate: " + str(info[1]) + "s"
+	if chance:
+		chance.text = "Chance: 1/" + str(info[2])
+	if cost:
+		if info[4] < 4:
+			cost.text = "Cost: $" + str(gun_info[num][3][info[4]+1])
+		else:
+			cost.text = "Cost: MAXED"
+	if E:
+		if info[4] < 0:
+			E.text = "E to buy"
+		elif currentGun != num:
+			E.text = "E to switch"
+		elif info[4] < 4:
+			E.text = "E to upg"
+		else:
+			E.text = "MAXED"
+
+func _update_all_pedestals() -> void:
+	_update_gun_pedestal(0)
+	_update_gun_pedestal(1)
+	_update_gun_pedestal(2)
+	_update_gun_pedestal(3)
+	_update_gun_pedestal(4)
 
 func _update_gun() -> void:
-	var gunName = gunProgression[currentGun]
+	var info = _get_gun_info(currentGun)
+	var gunName = gunNames[currentGun] + "_"
+	if info[4] < 0:
+		gunName += str(info[4] + 2)
+	else:
+		gunName += str(info[4] + 1)
 	for node in get_tree().get_nodes_in_group("table_guns"):
 		node.visible = node.name == gunName
-	updateGunValues.emit(gunRate[currentGun], gunChance[currentGun])
+	updateGunValues.emit(info[1], info[2])
 	
-func _on_player_purchase_gun() -> void:
-	if (cash < _get_gun_cost(currentGun) or currentGun == gunProgression.size()-1):
+func _on_player_purchase_gun(num : int) -> void:
+	var info = _get_gun_info(num)
+	if currentGun != num and gun_info[currentGun][4] > -1:
+		var prev = currentGun
+		currentGun = num
+		_update_gun_pedestal(num)
+		_update_gun_pedestal(prev)
+		_update_gun()
 		return
-	_update_cash(_get_gun_cost(currentGun) * -1)
-	currentGun += 1
-	_update_gun_pedestal()
+	var cost = gun_info[num][3][info[4]+1]
+	if (cash < cost or info[4] >= 4): # least confusing line of code ever
+		return
+	
+	var prev = currentGun
+	currentGun = num
+	gun_info[num][4] += 1
+	_update_cash(-cost)
+	_update_gun_pedestal(num)
+	_update_gun_pedestal(prev)
 	_update_gun()
 
 func _on_player_gun_shoot(wager : int, choice : bool, result : bool) -> void:
