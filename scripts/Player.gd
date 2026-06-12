@@ -433,7 +433,6 @@ func _die() -> void:
 		raise_amount = 0.0
 		_stand_up()
 
-
 # Impulse to head, Launch body
 # launch velocity (impulse = mass * speed)
 func _kick_head() -> void:
@@ -448,7 +447,6 @@ func _kick_head() -> void:
 	var head := bone_sim.get_node_or_null("Head") as PhysicalBone3D
 	if head:
 		head.apply_central_impulse(dir * head_whip)
-
 
 func _shoot_state_reset() -> void:
 	gun_seq = GunSeq.IDLE
