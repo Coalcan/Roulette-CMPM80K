@@ -19,6 +19,21 @@
 [ext_resource type="PackedScene" uid="uid://bal8xfmgyhaxv" path="res://assets/Pistol_4.fbx" id="13_jscy8"]
 [ext_resource type="PackedScene" uid="uid://chmx3j674fvom" path="res://assets/Revolver_5.fbx" id="14_jbj1t"]
 [ext_resource type="PackedScene" uid="uid://htil1qdrhqa1" path="res://assets/Pistol_5.fbx" id="14_pm3ni"]
+[ext_resource type="PackedScene" uid="uid://b4vjnmpxck2d1" path="res://assets/SubmachineGun_1.fbx" id="19_dgi5k"]
+[ext_resource type="PackedScene" uid="uid://c8cyaoyu0mbxn" path="res://assets/Shotgun_2.fbx" id="19_gqmmt"]
+[ext_resource type="PackedScene" uid="uid://sq72j1s0o1ss" path="res://assets/SubmachineGun_2.fbx" id="20_j8jky"]
+[ext_resource type="PackedScene" uid="uid://d0pf6o4ntctd0" path="res://assets/SubmachineGun_3.fbx" id="21_kmb1v"]
+[ext_resource type="PackedScene" uid="uid://uiohux4xgc71" path="res://assets/SubmachineGun_4.fbx" id="22_fuf3a"]
+[ext_resource type="PackedScene" uid="uid://ct1mebsdtwiqs" path="res://assets/SubmachineGun_5.fbx" id="23_pibwh"]
+[ext_resource type="PackedScene" uid="uid://bbue8e8iaain7" path="res://assets/AssaultRifle_1.fbx" id="24_c6pm6"]
+[ext_resource type="PackedScene" uid="uid://cq16xfle58n5g" path="res://assets/AssaultRifle_2.fbx" id="25_5he1u"]
+[ext_resource type="PackedScene" uid="uid://brakofyf6jhfi" path="res://assets/AssaultRifle_3.fbx" id="26_5poiv"]
+[ext_resource type="PackedScene" uid="uid://dqywkdvl75eve" path="res://assets/AssaultRifle_4.fbx" id="27_2cjbq"]
+[ext_resource type="PackedScene" uid="uid://cp8172355ksg6" path="res://assets/AssaultRifle_5.fbx" id="28_chjal"]
+[ext_resource type="PackedScene" uid="uid://vqx453d1uhp4" path="res://assets/Shotgun_3.fbx" id="30_cjqg0"]
+[ext_resource type="PackedScene" uid="uid://q0abe7iiugee" path="res://assets/Shotgun_4.fbx" id="31_vchkt"]
+[ext_resource type="PackedScene" uid="uid://btsirhvgbvgds" path="res://assets/Shotgun_SawedOff.fbx" id="32_txyw0"]
+[ext_resource type="PackedScene" uid="uid://3ptcm6iuorwq" path="res://assets/Shotgun_ShortStock.fbx" id="33_vc5cj"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_10am8"]
 material = ExtResource("2_67ukh")
@@ -29,10 +44,6 @@ size = Vector3(50, 0.1, 50)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_body"]
 radius = 0.13
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gqmmt"]
-radius = 0.10839844
-height = 0.66204375
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jscy8"]
 radius = 0.33569336
@@ -97,10 +108,6 @@ height = 1.5108808
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_txyw0"]
 radius = 0.14453125
 height = 1.329623
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_nvyfr"]
-radius = 0.13623047
-height = 0.687167
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ebwl3"]
 cull_mode = 2
@@ -214,24 +221,23 @@ shape = SubResource("BoxShape3D_cslr5")
 [node name="Player" parent="." unique_id=1690100993 instance=ExtResource("2_ne212")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -7.86578)
 
-[node name="PhysicalBoneSimulator3D" type="PhysicalBoneSimulator3D" parent="Player/Male_Casual/HumanArmature/Skeleton3D" parent_id_path=PackedInt32Array(1690100993, 483569689, 293980322) index="1" unique_id=467785250]
+[node name="PhysicalBoneSimulator3D" type="PhysicalBoneSimulator3D" parent="Player/Male_Casual/HumanArmature/Skeleton3D" parent_id_path=PackedInt32Array(1690100993, 483569689, 1797616450) index="1" unique_id=467785250]
 
 [node name="Body" type="PhysicalBone3D" parent="Player/Male_Casual/HumanArmature/Skeleton3D/PhysicalBoneSimulator3D" unique_id=467785251]
-transform = Transform3D(1, -1.4210852e-14, 7.1525574e-07, -2.842173e-14, 1, 5.960467e-08, -7.1525574e-07, -5.960467e-08, 1, 0.002050579, 2.1212385, 0.21212816)
-body_offset = Transform3D(1, 6.7762636e-21, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+transform = Transform3D(1, 4.0085323e-14, 7.1525585e-07, 1.5237263e-15, 1, -5.817366e-08, -7.1525585e-07, 5.817366e-08, 1, 0.0020505781, 2.1212382, 0.21212864)
 bone_name = "Body"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Player/Male_Casual/HumanArmature/Skeleton3D/PhysicalBoneSimulator3D/Body" unique_id=467785252]
 shape = SubResource("SphereShape3D_body")
 
 [node name="Hips" type="PhysicalBone3D" parent="Player/Male_Casual/HumanArmature/Skeleton3D/PhysicalBoneSimulator3D" unique_id=1739353840]
-transform = Transform3D(1, 1.799079e-07, -3.1542494e-10, -3.5831707e-08, 0.19744818, -0.9803133, -1.7630384e-07, 0.9803133, 0.19744818, 8.5454505e-11, 1.9604686, 0.09906912)
+transform = Transform3D(1, 2.6050435e-07, -3.1546904e-10, -5.174533e-08, 0.19744803, -0.9803134, -2.553136e-07, 0.98031336, 0.19744805, -5.8822778e-08, 1.9604695, 0.09907389)
 joint_type = 2
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8099943e-10, -9.538209e-07, 0.0019688604)
-body_offset = Transform3D(1, -8.526513e-14, -7.5427664e-11, -7.545253e-11, 7.4505806e-08, -1.0000001, 1.7053026e-13, 1.0000001, 7.4505806e-08, -3.808509e-10, 0.0019688606, 9.536743e-07)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.8359355e-08, -6.1990004e-06, 0.0019688604)
+body_offset = Transform3D(1, 1.9895197e-13, -7.5417006e-11, -7.54099e-11, 5.9604645e-08, -1.0000001, -2.2737368e-13, 1, 5.9604645e-08, -5.8359205e-08, 0.0019688606, 6.198883e-06)
 bone_name = "Hips"
-joint_constraints/swing_span = 19.999998
-joint_constraints/twist_span = 19.999998
+joint_constraints/swing_span = 19.999994
+joint_constraints/twist_span = 19.999994
 joint_constraints/bias = 0.3
 joint_constraints/softness = 0.8
 joint_constraints/relaxation = 1.0
@@ -241,13 +247,13 @@ transform = Transform3D(1, -4.394707e-12, 1.563194e-12, 0, 3.874302e-07, 1.00000
 shape = SubResource("CapsuleShape3D_jscy8")
 
 [node name="Abdomen" type="PhysicalBone3D" parent="Player/Male_Casual/HumanArmature/Skeleton3D/PhysicalBoneSimulator3D" unique_id=1823144131]
-transform = Transform3D(1, 1.0559756e-06, -1.0459537e-11, -5.0781592e-09, 0.0047990694, -0.9999885, -1.0559634e-06, 0.99998856, 0.0047990694, 1.3071367e-08, 2.439843, 0.026919365)
+transform = Transform3D(1, 1.0667511e-06, -6.923393e-13, -5.1200253e-09, 0.0047989944, -0.9999885, -1.0667388e-06, 0.9999885, 0.004798995, 2.3841986e-07, 2.4398425, 0.026919842)
 joint_type = 2
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.57828e-09, -0.005589484, 0.09566615)
-body_offset = Transform3D(1, 0, -1.0499157e-11, -1.0497381e-11, 9.313226e-10, -1.0000002, 0, 1.0000002, 1.3969839e-09, 6.5792847e-09, 0.09566617, 0.005589485)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.3279878e-07, -0.005589487, 0.095666185)
+body_offset = Transform3D(1, 4.2236934e-09, -7.0254913e-13, -6.741274e-13, 9.313226e-10, -0.9999999, -4.2235797e-09, 0.99999994, 1.6763806e-08, 2.3282246e-07, 0.09566617, 0.005589485)
 bone_name = "Abdomen"
 joint_constraints/swing_span = 30.0
-joint_constraints/twist_span = 19.999998
+joint_constraints/twist_span = 19.999994
 joint_constraints/bias = 0.3
 joint_constraints/softness = 0.8
 joint_constraints/relaxation = 1.0
@@ -257,10 +263,10 @@ transform = Transform3D(1, 6.17284e-14, -2.0349944e-11, 0, 2.7008355e-08, 0.9999
 shape = SubResource("CapsuleShape3D_pm3ni")
 
 [node name="Neck" type="PhysicalBone3D" parent="Player/Male_Casual/HumanArmature/Skeleton3D/PhysicalBoneSimulator3D" unique_id=1649989674]
-transform = Transform3D(1, 7.5905024e-07, 4.175705e-09, 4.1755004e-09, 2.6978722e-07, -1, -7.5905024e-07, 1, 2.6978722e-07, -2.6932139e-09, 4.0554934, -0.13511753)
+transform = Transform3D(1, 7.6028255e-07, 4.175557e-09, 4.1754875e-09, 9.097329e-08, -1, -7.6028255e-07, 1, 9.097329e-08, -3.6244205e-09, 4.0554934, -0.13511753)
 joint_type = 2
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8130633e-09, -1.7615252e-10, 0.0009765624)
-body_offset = Transform3D(1, 7.5348225e-09, 3.880207e-12, 3.8335324e-12, 1.9528143e-07, -1.0000001, -7.534879e-09, 1.0000001, 1.8038025e-07, -2.8130671e-09, 0.0009765625, 0)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8130633e-09, -2.1980831e-10, 0.0009765625)
+body_offset = Transform3D(1, 7.5348225e-09, 3.798205e-12, 3.8335663e-12, 1.9528143e-07, -1, -7.534879e-09, 1.0000001, 2.2508377e-07, -2.8130671e-09, 0.0009765625, 0)
 bone_name = "Neck"
 joint_constraints/swing_span = 30.0
 joint_constraints/twist_span = 30.0
@@ -273,10 +279,10 @@ transform = Transform3D(1, 1.9267628e-16, -2.3703706e-11, 2.3703706e-11, 0, 1, -
 shape = SubResource("CapsuleShape3D_og1vs")
 
 [node name="Head" type="PhysicalBone3D" parent="Player/Male_Casual/HumanArmature/Skeleton3D/PhysicalBoneSimulator3D" unique_id=1122230332]
-transform = Transform3D(0.99998194, -0.0005553615, 0.0059887213, 0.005988721, -3.2495143e-06, -0.99998206, 0.000555371, 0.9999999, 7.6449155e-08, 3.1138409e-06, 4.2781453, -0.13511753)
+transform = Transform3D(0.99998194, -0.00058504654, 0.0059942957, 0.0059942952, -3.6030187e-06, -0.99998206, 0.00058505766, 0.9999998, -9.601211e-08, 3.112402e-06, 4.2781453, -0.13511753)
 joint_type = 2
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00017250593, 6.045997e-10, 0.028284553)
-body_offset = Transform3D(1.0000002, -5.1737297e-06, -4.2051965e-05, -4.204972e-05, 2.5297119e-08, -1.0000001, 5.1739044e-06, 1.0000002, 1.0179733e-08, 0.00017369539, 0.02828455, 0)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00017266364, 5.268398e-09, 0.028284555)
+body_offset = Transform3D(1.0000002, -3.4859113e-05, -3.647577e-05, -3.6475205e-05, -1.9972504e-09, -1, 3.4859055e-05, 1.0000001, 2.6533662e-08, 0.00017369539, 0.02828455, 0)
 bone_name = "Head"
 joint_constraints/swing_span = 30.0
 joint_constraints/twist_span = 45.0
@@ -289,10 +295,10 @@ transform = Transform3D(0.99999803, -4.3077344e-07, -6.4028427e-09, 2.4330802e-0
 shape = SubResource("CapsuleShape3D_2wyq8")
 
 [node name="ShoulderL" type="PhysicalBone3D" parent="Player/Male_Casual/HumanArmature/Skeleton3D/PhysicalBoneSimulator3D" unique_id=164142709]
-transform = Transform3D(0.71484566, 1.1897621e-06, -0.69928235, -0.69928235, -9.250934e-07, -0.71484566, -1.4973978e-06, 1, 1.7068061e-07, 0.25167313, 3.5970912, -0.029899597)
+transform = Transform3D(0.71484566, 1.1860039e-06, -0.6992822, -0.6992822, -8.332853e-07, -0.71484566, -1.4305114e-06, 1, 2.3368113e-07, 0.25167286, 3.5970912, -0.029899597)
 joint_type = 2
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.003950835, 0.00049734086, 0.0038323381)
-body_offset = Transform3D(1.0000001, -1.2612986e-08, 4.1723226e-07, 2.6822102e-07, 9.0179554e-08, -1.0000002, 1.5070441e-08, 1, 9.617543e-08, 0.0039508343, 0.0038323402, -0.00049734116)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.003950835, 0.0004973409, 0.003832339)
+body_offset = Transform3D(1, -1.6682861e-08, 2.0861592e-07, 2.682211e-07, 8.955688e-08, -1, 2.9802436e-08, 0.9999999, 9.9571e-08, 0.0039508343, 0.0038323402, -0.00049734116)
 bone_name = "Shoulder.L"
 joint_constraints/swing_span = 15.0
 joint_constraints/twist_span = 15.0
@@ -305,12 +311,12 @@ transform = Transform3D(1, 2.5962094e-13, 5.7298166e-11, -2.8649083e-11, -1.5461
 shape = SubResource("CapsuleShape3D_vxglm")
 
 [node name="UpperArmL" type="PhysicalBone3D" parent="Player/Male_Casual/HumanArmature/Skeleton3D/PhysicalBoneSimulator3D" unique_id=2035934223]
-transform = Transform3D(0.07939464, 0.075186774, -0.9940038, 0.06136775, 0.9948915, 0.08015559, 0.99495256, -0.067363694, 0.074375, 0.4707336, 3.8226063, -0.029683113)
+transform = Transform3D(0.07939448, 0.07518599, -0.99400383, 0.061367825, 0.99489164, 0.08015479, 0.99495256, -0.0673637, 0.0743749, 0.47072545, 3.8226142, -0.029687405)
 joint_type = 2
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.7685644e-06, -6.4432633e-09, 0.0037128315)
-body_offset = Transform3D(1.0000002, 1.1175871e-07, -5.2154064e-08, -5.9604645e-08, 1.7895363e-06, -1.0000004, -8.940697e-08, 1.0000004, 1.7355196e-06, -4.7683716e-06, 0.003712833, 0)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.060209e-06, -7.157205e-06, 0.0037048454)
+body_offset = Transform3D(1.0000001, 2.2351742e-08, -8.195639e-08, -5.9604645e-08, 1.2279488e-06, -1.0000001, -8.940697e-08, 1.0000004, 1.2554228e-06, -9.059906e-06, 0.003704846, 7.1525574e-06)
 bone_name = "UpperArm.L"
-joint_constraints/swing_span = 84.99999
+joint_constraints/swing_span = 84.99998
 joint_constraints/twist_span = 69.99999
 joint_constraints/bias = 0.3
 joint_constraints/softness = 0.8
@@ -321,12 +327,12 @@ transform = Transform3D(0.9967782, 0.08019893, 3.5055976e-09, 0, -4.371139e-08, 
 shape = SubResource("CapsuleShape3D_2f3dj")
 
 [node name="LowerArmL" type="PhysicalBone3D" parent="Player/Male_Casual/HumanArmature/Skeleton3D/PhysicalBoneSimulator3D" unique_id=242408269]
-transform = Transform3D(-1.6847916e-05, 0.99866736, -0.051609572, 0.0003303373, 0.051609576, 0.9986673, 0.99999994, -2.231027e-07, -0.0003307666, 1.2050643, 3.763392, -0.08462381)
+transform = Transform3D(-1.6968814e-05, 0.99866736, -0.051609952, 0.0003303758, 0.051609956, 0.9986673, 1, -1.0448093e-07, -0.00033081128, 1.205064, 3.7633927, -0.08462381)
 joint_type = 3
-body_offset = Transform3D(1.0000001, -1.6756535e-07, 1.3129989e-05, 1.4238678e-07, 1.0000004, 1.0580093e-06, -1.31370325e-05, -9.871252e-07, 1.0000004, 0, 0, 0)
+body_offset = Transform3D(1, -1.606113e-07, 1.3047975e-05, 1.4262515e-07, 1.0000001, 7.413202e-07, -1.3135752e-05, -7.3757155e-07, 1.0000002, 0, 0, 0)
 bone_name = "LowerArm.L"
 joint_constraints/angular_limit_enabled = true
-joint_constraints/angular_limit_upper = 144.99998
+joint_constraints/angular_limit_upper = 144.99997
 joint_constraints/angular_limit_lower = 0.0
 joint_constraints/angular_limit_bias = 0.3
 joint_constraints/angular_limit_softness = 0.9
@@ -337,13 +343,13 @@ transform = Transform3D(1, 2.9422154e-10, -1.7666025e-08, -5.0748383e-10, 0.9999
 shape = SubResource("CapsuleShape3D_yq6so")
 
 [node name="PalmL" type="PhysicalBone3D" parent="Player/Male_Casual/HumanArmature/Skeleton3D/PhysicalBoneSimulator3D" unique_id=1006757015]
-transform = Transform3D(-0.0030717002, 0.13139182, -0.9913258, -0.023172362, 0.9910549, 0.13142774, 0.9997268, 0.023375066, 4.353899e-07, 2.0268404, 3.805676, -0.08462429)
+transform = Transform3D(-0.003071819, 0.13139117, -0.9913259, -0.023172416, 0.991055, 0.13142708, 0.99972683, 0.023375133, 3.089974e-07, 2.0268397, 3.805676, -0.08462381)
 joint_type = 2
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.6971355e-10, 4.785886e-07, 0.0010106561)
-body_offset = Transform3D(1.0000001, -1.1511147e-06, 4.6530613e-07, 4.4215452e-07, -1.7144173e-06, -1.0000002, 1.1250377e-06, 1.0000006, -1.733258e-06, 0, 0.0010106564, -4.7683716e-07)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.448619e-10, 4.785156e-07, 0.0010101794)
+body_offset = Transform3D(1, -1.1585653e-06, 4.4092792e-07, 4.407235e-07, -1.7115001e-06, -1.0000001, 1.0561198e-06, 1.0000005, -1.6617068e-06, 0, 0.0010101795, -4.7683716e-07)
 bone_name = "Palm.L"
-joint_constraints/swing_span = 39.999996
-joint_constraints/twist_span = 24.999998
+joint_constraints/swing_span = 39.99999
+joint_constraints/twist_span = 24.999996
 joint_constraints/bias = 0.3
 joint_constraints/softness = 0.8
 joint_constraints/relaxation = 1.0
@@ -353,10 +359,10 @@ transform = Transform3D(1, 1.5745883e-08, 2.8312206e-07, -4.8428774e-08, -3.3782
 shape = SubResource("CapsuleShape3D_fv21b")
 
 [node name="ShoulderR" type="PhysicalBone3D" parent="Player/Male_Casual/HumanArmature/Skeleton3D/PhysicalBoneSimulator3D" unique_id=635829008]
-transform = Transform3D(0.7148456, -1.2231984e-06, 0.69928235, 0.6992823, -9.4466856e-07, -0.7148456, 1.534988e-06, 1, 1.8006885e-07, -0.23307045, 3.597529, -0.02221632)
+transform = Transform3D(0.71484566, -1.3009592e-06, 0.69928235, 0.69928235, -1.0143414e-06, -0.71484566, 1.639296e-06, 1, 1.8464033e-07, -0.23307033, 3.5975292, -0.02221632)
 joint_type = 2
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0007481578, -8.524268e-11, 0.000815868)
-body_offset = Transform3D(1, -2.4036012e-08, -3.2782526e-07, -2.6822107e-07, 7.780172e-08, -1.0000002, 1.5069304e-08, 1.0000001, 9.066231e-08, -0.0007481575, 0.0008158684, 0)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00074815756, -9.505087e-11, 0.0008158682)
+body_offset = Transform3D(1.0000001, -3.8434223e-08, -1.7881364e-07, -2.3841875e-07, 7.780187e-08, -1, 1.506919e-08, 1, 1.0268417e-07, -0.0007481575, 0.0008158684, 0)
 bone_name = "Shoulder.R"
 joint_constraints/swing_span = 15.0
 joint_constraints/twist_span = 15.0
@@ -369,12 +375,12 @@ transform = Transform3D(1, -2.7224352e-13, 3.8198777e-11, -3.7630343e-11, 8.2280
 shape = SubResource("CapsuleShape3D_j8jky")
 
 [node name="UpperArmR" type="PhysicalBone3D" parent="Player/Male_Casual/HumanArmature/Skeleton3D/PhysicalBoneSimulator3D" unique_id=747979312]
-transform = Transform3D(0.09679246, -0.08119669, 0.9919871, -0.05937345, 0.9944209, 0.08718923, -0.99353206, -0.067336954, 0.09143152, -0.4562305, 3.8229582, -0.022564411)
+transform = Transform3D(0.09679255, -0.08119681, 0.9919871, -0.059373192, 0.99442095, 0.087189324, -0.99353206, -0.06733672, 0.091431625, -0.45622975, 3.8229585, -0.022564411)
 joint_type = 2
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5287758e-05, 3.2356062e-09, 0.0034219027)
-body_offset = Transform3D(1.0000001, 1.0356307e-06, 5.289912e-07, 4.6938658e-07, -9.345822e-07, -1, -1.0579824e-06, 1.0000004, -9.564683e-07, 3.528595e-05, 0.0034219027, 0)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.52876e-05, 2.5913045e-09, 0.003421187)
+body_offset = Transform3D(1.0000001, 1.0952353e-06, 4.8428774e-07, 4.6938658e-07, -7.9069287e-07, -1.0000001, -1.0579824e-06, 1.0000002, -7.683411e-07, 3.528595e-05, 0.0034211874, 0)
 bone_name = "UpperArm.R"
-joint_constraints/swing_span = 84.99999
+joint_constraints/swing_span = 84.99998
 joint_constraints/twist_span = 69.99999
 joint_constraints/bias = 0.3
 joint_constraints/softness = 0.8
@@ -385,13 +391,13 @@ transform = Transform3D(0.9967757, -0.0801993, 2.2351742e-08, -1.4901161e-08, -7
 shape = SubResource("CapsuleShape3D_kmb1v")
 
 [node name="LowerArmR" type="PhysicalBone3D" parent="Player/Male_Casual/HumanArmature/Skeleton3D/PhysicalBoneSimulator3D" unique_id=675085632]
-transform = Transform3D(-1.841361e-05, 0.051030185, 0.9986971, -0.0003549474, 0.9986971, -0.051030185, -1, -0.0003554246, -2.7658587e-07, -1.1340662, 3.764001, -0.08462381)
+transform = Transform3D(-1.8271601e-05, 0.05103067, 0.9986971, -0.00035467173, 0.9986971, -0.05103067, -1, -0.00035514205, -1.486587e-07, -1.1340756, 3.7640224, -0.08462381)
 joint_type = 3
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.7648785e-10, -4.2916785e-05, 0.004148483)
-body_offset = Transform3D(1.0000001, 4.6711648e-08, 1.1534161e-07, 3.8349697e-08, 4.4695022e-07, -1.0000001, -3.3527613e-08, 1.0000002, 3.502756e-07, 0, 0.0041484833, 4.2915344e-05)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.459396e-10, -6.365756e-05, 0.004159092)
+body_offset = Transform3D(1.0000001, 6.967457e-08, 6.0199426e-08, 3.8367915e-08, -5.219324e-08, -1.0000002, -3.3527613e-08, 1.0000002, -4.4650694e-08, 0, 0.004159093, 6.365776e-05)
 bone_name = "LowerArm.R"
 joint_constraints/angular_limit_enabled = true
-joint_constraints/angular_limit_upper = 144.99998
+joint_constraints/angular_limit_upper = 144.99997
 joint_constraints/angular_limit_lower = 0.0
 joint_constraints/angular_limit_bias = 0.3
 joint_constraints/angular_limit_softness = 0.9
@@ -402,13 +408,13 @@ transform = Transform3D(0.99999934, -2.7011993e-10, -9.837095e-09, 4.3655746e-10
 shape = SubResource("CapsuleShape3D_fuf3a")
 
 [node name="PalmR" type="PhysicalBone3D" parent="Player/Male_Casual/HumanArmature/Skeleton3D/PhysicalBoneSimulator3D" unique_id=1916749992]
-transform = Transform3D(-0.002912645, -0.124494046, 0.9922161, 0.023194771, 0.9919449, 0.124528125, -0.9997267, 0.023376932, -1.5722808e-06, -1.9611077, 3.8064854, -0.08462381)
+transform = Transform3D(-0.0029125276, -0.124494106, 0.9922161, 0.023195036, 0.99194497, 0.12452817, -0.9997267, 0.02337718, -1.4219721e-06, -1.9611062, 3.806493, -0.08468008)
 joint_type = 2
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.04919145e-05, -0.0004515662, 0.0010099403)
-body_offset = Transform3D(1.0000001, -1.3969839e-07, 1.4207442e-06, 1.342574e-06, 1.5037716e-06, -1.0000001, 1.4901161e-07, 1.0000002, 1.4980648e-06, 1.04904175e-05, 0.0010099411, 0.0004515648)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.77123e-05, -0.00045824188, 0.0010074369)
+body_offset = Transform3D(1.0000001, -1.15484e-07, 1.3703609e-06, 1.3425322e-06, 1.395882e-06, -1.0000001, 1.4901161e-07, 1.0000001, 1.4121712e-06, 6.771088e-05, 0.0010074377, 0.0004582405)
 bone_name = "Palm.R"
-joint_constraints/swing_span = 39.999996
-joint_constraints/twist_span = 24.999998
+joint_constraints/swing_span = 39.99999
+joint_constraints/twist_span = 24.999996
 joint_constraints/bias = 0.3
 joint_constraints/softness = 0.8
 joint_constraints/relaxation = 1.0
@@ -418,13 +424,13 @@ transform = Transform3D(1, 6.757335e-09, 3.7253635e-08, -3.7253635e-08, -6.03113
 shape = SubResource("CapsuleShape3D_pibwh")
 
 [node name="UpperLegL" type="PhysicalBone3D" parent="Player/Male_Casual/HumanArmature/Skeleton3D/PhysicalBoneSimulator3D" unique_id=1409666852]
-transform = Transform3D(1, -2.8171365e-07, -2.3022485e-08, -1.9273307e-08, -0.14922255, 0.9888037, -2.8199494e-07, -0.9888037, -0.14922255, 0.30169517, 2.150915, 0.030174732)
+transform = Transform3D(1, -2.8115247e-07, -2.3022292e-08, -1.9189859e-08, -0.1492229, 0.9888036, -2.8144e-07, -0.9888036, -0.14922291, 0.30169517, 2.150915, 0.030175209)
 joint_type = 2
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0039187e-10, -1.096721e-05, 0.0041468143)
-body_offset = Transform3D(1, -1.9895197e-13, -2.4209395e-08, -2.4209385e-08, -2.9802322e-08, -1, 1.4210855e-13, 0.9999871, -4.4703484e-08, 0, 0.0041468143, 1.0967255e-05)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.00385915e-10, -1.0969139e-05, 0.004146576)
+body_offset = Transform3D(1, -2.842171e-14, -2.420935e-08, -2.420935e-08, 4.172325e-07, -1, -5.684342e-14, 0.9999972, 4.4703484e-07, 0, 0.004146576, 1.0967255e-05)
 bone_name = "UpperLeg.L"
-joint_constraints/swing_span = 74.99999
-joint_constraints/twist_span = 24.999998
+joint_constraints/swing_span = 74.99998
+joint_constraints/twist_span = 24.999996
 joint_constraints/bias = 0.3
 joint_constraints/softness = 0.8
 joint_constraints/relaxation = 1.0
@@ -434,14 +440,14 @@ transform = Transform3D(1, 8.881784e-14, -1.1937118e-12, 1.2789769e-12, 0.062790
 shape = SubResource("CapsuleShape3D_chjal")
 
 [node name="LowerLegL" type="PhysicalBone3D" parent="Player/Male_Casual/HumanArmature/Skeleton3D/PhysicalBoneSimulator3D" unique_id=1178799396]
-transform = Transform3D(1, -2.554253e-07, -4.4750098e-12, 3.7784734e-08, 0.14791137, 0.9890006, -2.5261514e-07, -0.9890006, 0.14791137, 0.3016952, 1.3294231, 0.1522336)
+transform = Transform3D(1, -2.7637319e-07, -8.6997017e-13, 4.088015e-08, 0.14791338, 0.9890003, -2.7333303e-07, -0.9890003, 0.14791338, 0.3016952, 1.3294231, 0.1522336)
 joint_type = 3
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.0951229e-15, -4.6834398e-08, 0.0064803422)
-body_offset = Transform3D(1, 1.0231815e-12, -3.2329694e-13, -2.4868996e-14, -4.4703484e-08, -0.999999, -1.4210855e-13, 0.99998826, 7.227063e-06, 0, 0.006480336, 0)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.683628e-16, -1.0332434e-08, 0.0064803376)
+body_offset = Transform3D(1, 1.7053026e-13, 5.684342e-14, 6.3948846e-14, -2.9802322e-08, -0.9999998, -1.4210855e-13, 0.9999975, 1.5944242e-06, 0, 0.006480336, 0)
 bone_name = "LowerLeg.L"
 joint_constraints/angular_limit_enabled = true
 joint_constraints/angular_limit_upper = 0.0
-joint_constraints/angular_limit_lower = -144.99998
+joint_constraints/angular_limit_lower = -144.99997
 joint_constraints/angular_limit_bias = 0.3
 joint_constraints/angular_limit_softness = 0.9
 joint_constraints/angular_limit_relaxation = 1.0
@@ -451,13 +457,13 @@ transform = Transform3D(0.99965733, 0.025832867, 0.004230296, 0, -0.16160384, 0.
 shape = SubResource("CapsuleShape3D_cjqg0")
 
 [node name="UpperLegR" type="PhysicalBone3D" parent="Player/Male_Casual/HumanArmature/Skeleton3D/PhysicalBoneSimulator3D" unique_id=1185107861]
-transform = Transform3D(1, 2.1022701e-07, 2.2907e-08, 8.560836e-09, -0.14847726, 0.98891586, 2.1129799e-07, -0.98891586, -0.14847726, -0.3176863, 2.059559, 0.030184746)
+transform = Transform3D(1, 2.1696387e-07, 2.2904178e-08, 9.5639185e-09, -0.14847736, 0.9889158, 2.1795975e-07, -0.9889158, -0.14847736, -0.31768626, 2.0595608, 0.03018856)
 joint_type = 2
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.053003e-09, -0.01356198, 0.09449149)
-body_offset = Transform3D(1, -6.252776e-13, 2.1726766e-08, 2.1726763e-08, 3.1292439e-07, -0.99999994, 6.6791017e-13, 1.0000187, 3.2782555e-07, 0, 0.09449148, 0.013562202)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0527446e-09, -0.013558391, 0.09449003)
+body_offset = Transform3D(1, 1.0231815e-12, 2.1724603e-08, 2.1724599e-08, 3.1292439e-07, -1.0000001, -1.0373924e-12, 1.000002, 3.2782555e-07, 0, 0.09449005, 0.013558388)
 bone_name = "UpperLeg.R"
-joint_constraints/swing_span = 74.99999
-joint_constraints/twist_span = 24.999998
+joint_constraints/swing_span = 74.99998
+joint_constraints/twist_span = 24.999996
 joint_constraints/bias = 0.3
 joint_constraints/softness = 0.8
 joint_constraints/relaxation = 1.0
@@ -467,15 +473,15 @@ transform = Transform3D(1, 1.563194e-13, -6.3948846e-13, -2.1316282e-13, 0.06279
 shape = SubResource("CapsuleShape3D_vchkt")
 
 [node name="LowerLegR" type="PhysicalBone3D" parent="Player/Male_Casual/HumanArmature/Skeleton3D/PhysicalBoneSimulator3D" unique_id=1376987301]
-transform = Transform3D(1, -1.600965e-08, 1.391301e-12, 2.3745492e-09, 0.14840579, 0.98892653, -1.5832574e-08, -0.98892653, 0.1484058, -0.31768632, 1.3252237, 0.15227938)
+transform = Transform3D(1, -1.0848285e-07, 1.7767756e-13, 1.6098813e-08, 0.14840128, 0.98892725, -1.07281664e-07, -0.9889273, 0.14840126, -0.31768638, 1.3252239, 0.15228033)
 joint_type = 3
-joint_offset = Transform3D(-0.99950564, -0.031061333, -4.6414667e-10, 0.030818548, -0.9916861, 0.12481363, -0.003876897, 0.12475166, 0.9921788, 1.5657175e-14, 4.3465774e-05, 0.0064533832)
-joint_rotation = Vector3(-0.12514018, -2.3325267e-10, 3.1105258)
-body_offset = Transform3D(1, 8.089529e-12, -2.4806823e-12, -1.6209256e-14, -9.983778e-07, -1.0000018, -7.1054274e-15, 1.000017, -1.1518598e-05, 0, 0.006453395, -4.339218e-05)
+joint_offset = Transform3D(-0.9995055, -0.031061329, 2.3400823e-10, 0.030818544, -0.991686, 0.124813624, -0.0038768963, 0.12475165, 0.9921787, 2.5142017e-15, 4.435759e-05, 0.006453272)
+joint_rotation = Vector3(-0.12514018, 2.358529e-10, 3.1105258)
+body_offset = Transform3D(1, 1.2079227e-12, -3.9790393e-13, -2.4868996e-14, -7.599592e-07, -1.0000006, 4.973799e-14, 1.0000021, -1.8328428e-06, 0, 0.0064532757, -4.4345856e-05)
 bone_name = "LowerLeg.R"
 joint_constraints/angular_limit_enabled = true
 joint_constraints/angular_limit_upper = 0.0
-joint_constraints/angular_limit_lower = -144.99998
+joint_constraints/angular_limit_lower = -144.99997
 joint_constraints/angular_limit_bias = 0.3
 joint_constraints/angular_limit_softness = 0.9
 joint_constraints/angular_limit_relaxation = 1.0
@@ -743,6 +749,28 @@ text = "— GAMBLE —
 [1-10] Add to wager
 [C] Clear wager"
 
+[node name="LockedHUD" type="CanvasLayer" parent="." unique_id=1279168514]
+
+[node name="Panel" type="PanelContainer" parent="LockedHUD" unique_id=409641162]
+visible = false
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -231.0
+offset_top = 25.0
+offset_right = -25.0
+offset_bottom = 192.0
+grow_horizontal = 0
+
+[node name="Label" type="Label" parent="LockedHUD/Panel" unique_id=1859638264]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "— GAMBLE —
+Reach $8 to Unlock
+
+
+"
+
 [node name="GunHUD" type="CanvasLayer" parent="." unique_id=1905973896]
 
 [node name="Panel" type="PanelContainer" parent="GunHUD" unique_id=1541544115]
@@ -804,6 +832,56 @@ visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0, 0)
 visible = false
 
+[node name="AssaultRifle_1" parent="Gun" unique_id=1801327597 groups=["table_guns"] instance=ExtResource("24_c6pm6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 0)
+visible = false
+
+[node name="AssaultRifle_2" parent="Gun" unique_id=1247084571 groups=["table_guns"] instance=ExtResource("25_5he1u")]
+visible = false
+
+[node name="AssaultRifle_3" parent="Gun" unique_id=160166331 groups=["table_guns"] instance=ExtResource("26_5poiv")]
+visible = false
+
+[node name="AssaultRifle_4" parent="Gun" unique_id=332058990 groups=["table_guns"] instance=ExtResource("27_2cjbq")]
+visible = false
+
+[node name="AssaultRifle_5" parent="Gun" unique_id=332547602 groups=["table_guns"] instance=ExtResource("28_chjal")]
+visible = false
+
+[node name="Shotgun_1" parent="Gun" unique_id=1804138883 groups=["table_guns"] instance=ExtResource("19_gqmmt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
+visible = false
+
+[node name="Shotgun_2" parent="Gun" unique_id=1452844323 groups=["table_guns"] instance=ExtResource("30_cjqg0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
+visible = false
+
+[node name="Shotgun_3" parent="Gun" unique_id=1450686843 groups=["table_guns"] instance=ExtResource("31_vchkt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
+visible = false
+
+[node name="Shotgun_5" parent="Gun" unique_id=1295239871 groups=["table_guns"] instance=ExtResource("32_txyw0")]
+visible = false
+
+[node name="Shotgun_4" parent="Gun" unique_id=2124865923 groups=["table_guns"] instance=ExtResource("33_vc5cj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0, 0)
+visible = false
+
+[node name="SubmachineGun_1" parent="Gun" unique_id=1001639653 groups=["table_guns"] instance=ExtResource("19_dgi5k")]
+visible = false
+
+[node name="SubmachineGun_2" parent="Gun" unique_id=690495159 groups=["table_guns"] instance=ExtResource("20_j8jky")]
+visible = false
+
+[node name="SubmachineGun_3" parent="Gun" unique_id=86342367 groups=["table_guns"] instance=ExtResource("21_kmb1v")]
+visible = false
+
+[node name="SubmachineGun_4" parent="Gun" unique_id=1225116958 groups=["table_guns"] instance=ExtResource("22_fuf3a")]
+visible = false
+
+[node name="SubmachineGun_5" parent="Gun" unique_id=248701157 groups=["table_guns"] instance=ExtResource("23_pibwh")]
+visible = false
+
 [node name="Shop_Keeper" parent="." unique_id=2001236395 instance=ExtResource("5_tbgi4")]
 transform = Transform3D(-3.4852823e-05, 0, 1, 0, 1, 0, -1, 0, -3.4852823e-05, -14.918926, 0, 0)
 script = ExtResource("8_tipki")
@@ -825,6 +903,104 @@ mesh = SubResource("BoxMesh_ya4ey")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ShopPedestal_1" unique_id=1724189581]
 shape = SubResource("BoxShape3D_eb6dy")
 
+[node name="ShopGun_1" type="Node3D" parent="ShopPedestal_1" unique_id=1358399048]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0)
+script = ExtResource("10_ya4ey")
+
+[node name="Pistol_1" parent="ShopPedestal_1/ShopGun_1" unique_id=529446050 groups=["pistols"] instance=ExtResource("5_0ld40")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0, 0)
+visible = false
+
+[node name="Pistol_2" parent="ShopPedestal_1/ShopGun_1" unique_id=966008722 groups=["pistols"] instance=ExtResource("11_gqmmt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0, 0)
+visible = false
+
+[node name="Pistol_3" parent="ShopPedestal_1/ShopGun_1" unique_id=383845282 groups=["pistols"] instance=ExtResource("12_yc10j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0, 0)
+visible = false
+
+[node name="Pistol_4" parent="ShopPedestal_1/ShopGun_1" unique_id=1905222532 groups=["pistols"] instance=ExtResource("13_jscy8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0, 0)
+visible = false
+
+[node name="Pistol_5" parent="ShopPedestal_1/ShopGun_1" unique_id=1472303791 groups=["pistols"] instance=ExtResource("14_pm3ni")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0, 0)
+visible = false
+
+[node name="GunPurchasePrompt_1" type="Node3D" parent="ShopPedestal_1" unique_id=145687370 groups=["shop_prompts"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.75, 0)
+
+[node name="Square" type="MeshInstance3D" parent="ShopPedestal_1/GunPurchasePrompt_1" unique_id=884986663]
+transform = Transform3D(-1.7484555e-07, 0, 1.5, 0, 2.75, 0, -4, 0, -6.556708e-08, 0, 0, 0)
+cast_shadow = 0
+mesh = SubResource("QuadMesh_prompt")
+
+[node name="E" type="Label3D" parent="ShopPedestal_1/GunPurchasePrompt_1" unique_id=907499706]
+transform = Transform3D(1, 0, -5.8281852e-08, 0, 1, 0, 5.8281852e-08, 0, 1, 0, 0, 0)
+pixel_size = 0.002
+offset = Vector2(300, -300)
+billboard = 1
+no_depth_test = true
+render_priority = 2
+modulate = Color(0, 0, 0, 1)
+text = "E to buy"
+font_size = 100
+
+[node name="Name" type="Label3D" parent="ShopPedestal_1/GunPurchasePrompt_1" unique_id=221908050]
+transform = Transform3D(1, 0, 7.28523e-09, 0, 1, 0, 7.28523e-09, 0, 1.1666667, 0, 0, 0)
+pixel_size = 0.002
+offset = Vector2(0, 300)
+billboard = 1
+no_depth_test = true
+render_priority = 2
+modulate = Color(0, 0, 0, 1)
+text = "Pistol"
+font_size = 120
+
+[node name="Rate" type="Label3D" parent="ShopPedestal_1/GunPurchasePrompt_1" unique_id=927962674]
+transform = Transform3D(1, 0, 7.28523e-09, 0, 1, 0, 7.28523e-09, 0, 1.1666667, 0, 0, 0)
+pixel_size = 0.002
+offset = Vector2(-300, 100)
+billboard = 1
+no_depth_test = true
+render_priority = 2
+modulate = Color(0, 0, 0, 1)
+text = "Rate: 0s"
+font_size = 100
+
+[node name="Chance" type="Label3D" parent="ShopPedestal_1/GunPurchasePrompt_1" unique_id=1933428900]
+transform = Transform3D(1, 0, 7.28523e-09, 0, 1, 0, 7.28523e-09, 0, 1.1666667, 0, 0, 0)
+pixel_size = 0.002
+offset = Vector2(300, 100)
+billboard = 1
+no_depth_test = true
+render_priority = 2
+modulate = Color(0, 0, 0, 1)
+text = "Chance: 1/4"
+font_size = 100
+
+[node name="Value" type="Label3D" parent="ShopPedestal_1/GunPurchasePrompt_1" unique_id=2055073386]
+transform = Transform3D(1, 0, 7.28523e-09, 0, 1, 0, 7.28523e-09, 0, 1.1666667, 0, 0, 0)
+pixel_size = 0.002
+offset = Vector2(0, -100)
+billboard = 1
+no_depth_test = true
+render_priority = 2
+modulate = Color(0, 0, 0, 1)
+text = "$0 per kill"
+font_size = 100
+
+[node name="Cost" type="Label3D" parent="ShopPedestal_1/GunPurchasePrompt_1" unique_id=423197927]
+transform = Transform3D(1, 0, 7.28523e-09, 0, 1, 0, 7.28523e-09, 0, 1.1666667, 0, 0, 0)
+pixel_size = 0.002
+offset = Vector2(-300, -300)
+billboard = 1
+no_depth_test = true
+render_priority = 2
+modulate = Color(0, 0, 0, 1)
+text = "Cost: $0"
+font_size = 100
+
 [node name="ShopPedestal_2" type="StaticBody3D" parent="." unique_id=851224659]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 1.25, 0)
 
@@ -834,6 +1010,104 @@ mesh = SubResource("BoxMesh_ya4ey")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ShopPedestal_2" unique_id=7607594]
 shape = SubResource("BoxShape3D_eb6dy")
+
+[node name="ShopGun_2" type="Node3D" parent="ShopPedestal_2" unique_id=972000423]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0)
+script = ExtResource("10_ya4ey")
+
+[node name="SubmachineGun_1" parent="ShopPedestal_2/ShopGun_2" unique_id=764931002 groups=["smgs"] instance=ExtResource("19_dgi5k")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.4, 0, 0)
+visible = false
+
+[node name="SubmachineGun_2" parent="ShopPedestal_2/ShopGun_2" unique_id=1838559428 groups=["smgs"] instance=ExtResource("20_j8jky")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.1, 0, 0)
+visible = false
+
+[node name="SubmachineGun_3" parent="ShopPedestal_2/ShopGun_2" unique_id=1289097211 groups=["smgs"] instance=ExtResource("21_kmb1v")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+visible = false
+
+[node name="SubmachineGun_4" parent="ShopPedestal_2/ShopGun_2" unique_id=1610846922 groups=["smgs"] instance=ExtResource("22_fuf3a")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.45, 0, 0)
+visible = false
+
+[node name="SubmachineGun_5" parent="ShopPedestal_2/ShopGun_2" unique_id=233307868 groups=["smgs"] instance=ExtResource("23_pibwh")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.4, 0, 0)
+visible = false
+
+[node name="GunPurchasePrompt_2" type="Node3D" parent="ShopPedestal_2" unique_id=1046458674 groups=["shop_prompts"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.75, 0)
+
+[node name="Square" type="MeshInstance3D" parent="ShopPedestal_2/GunPurchasePrompt_2" unique_id=352361869]
+transform = Transform3D(-1.7484555e-07, 0, 1.5, 0, 2.75, 0, -4, 0, -6.556708e-08, 0, 0, 0)
+cast_shadow = 0
+mesh = SubResource("QuadMesh_prompt")
+
+[node name="E" type="Label3D" parent="ShopPedestal_2/GunPurchasePrompt_2" unique_id=1572397895]
+transform = Transform3D(1, 0, -5.8281852e-08, 0, 1, 0, 5.8281852e-08, 0, 1, 0, 0, 0)
+pixel_size = 0.002
+offset = Vector2(300, -300)
+billboard = 1
+no_depth_test = true
+render_priority = 2
+modulate = Color(0, 0, 0, 1)
+text = "E to buy"
+font_size = 100
+
+[node name="Name" type="Label3D" parent="ShopPedestal_2/GunPurchasePrompt_2" unique_id=754437784]
+transform = Transform3D(1, 0, 7.28523e-09, 0, 1, 0, 7.28523e-09, 0, 1.1666667, 0, 0, 0)
+pixel_size = 0.002
+offset = Vector2(0, 300)
+billboard = 1
+no_depth_test = true
+render_priority = 2
+modulate = Color(0, 0, 0, 1)
+text = "SMG"
+font_size = 120
+
+[node name="Rate" type="Label3D" parent="ShopPedestal_2/GunPurchasePrompt_2" unique_id=829431155]
+transform = Transform3D(1, 0, 7.28523e-09, 0, 1, 0, 7.28523e-09, 0, 1.1666667, 0, 0, 0)
+pixel_size = 0.002
+offset = Vector2(-300, 100)
+billboard = 1
+no_depth_test = true
+render_priority = 2
+modulate = Color(0, 0, 0, 1)
+text = "Rate: 0s"
+font_size = 100
+
+[node name="Chance" type="Label3D" parent="ShopPedestal_2/GunPurchasePrompt_2" unique_id=1556761810]
+transform = Transform3D(1, 0, 7.28523e-09, 0, 1, 0, 7.28523e-09, 0, 1.1666667, 0, 0, 0)
+pixel_size = 0.002
+offset = Vector2(300, 100)
+billboard = 1
+no_depth_test = true
+render_priority = 2
+modulate = Color(0, 0, 0, 1)
+text = "Chance: 1/4"
+font_size = 100
+
+[node name="Value" type="Label3D" parent="ShopPedestal_2/GunPurchasePrompt_2" unique_id=1945287069]
+transform = Transform3D(1, 0, 7.28523e-09, 0, 1, 0, 7.28523e-09, 0, 1.1666667, 0, 0, 0)
+pixel_size = 0.002
+offset = Vector2(0, -100)
+billboard = 1
+no_depth_test = true
+render_priority = 2
+modulate = Color(0, 0, 0, 1)
+text = "$0 per kill"
+font_size = 100
+
+[node name="Cost" type="Label3D" parent="ShopPedestal_2/GunPurchasePrompt_2" unique_id=1838638836]
+transform = Transform3D(1, 0, 7.28523e-09, 0, 1, 0, 7.28523e-09, 0, 1.1666667, 0, 0, 0)
+pixel_size = 0.002
+offset = Vector2(-300, -300)
+billboard = 1
+no_depth_test = true
+render_priority = 2
+modulate = Color(0, 0, 0, 1)
+text = "Cost: $0"
+font_size = 100
 
 [node name="ShopPedestal_3" type="StaticBody3D" parent="." unique_id=1080210147]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 1.25, -2.5)
@@ -845,19 +1119,39 @@ mesh = SubResource("BoxMesh_ya4ey")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ShopPedestal_3" unique_id=1027277791]
 shape = SubResource("BoxShape3D_eb6dy")
 
-[node name="GunPedestal" type="StaticBody3D" parent="." unique_id=1466865690]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 1.25, -5)
+[node name="ShopGun_3" type="Node3D" parent="ShopPedestal_3" unique_id=494298159]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0)
+script = ExtResource("10_ya4ey")
 
-[node name="GunPurchasePrompt" type="Node3D" parent="GunPedestal" unique_id=503665989]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.75, 0)
+[node name="AssaultRifle_1" parent="ShopPedestal_3/ShopGun_3" unique_id=1365639990 groups=["rifles"] instance=ExtResource("24_c6pm6")]
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, -1, 0, 0)
 visible = false
 
-[node name="Square" type="MeshInstance3D" parent="GunPedestal/GunPurchasePrompt" unique_id=1658809304]
+[node name="AssaultRifle_2" parent="ShopPedestal_3/ShopGun_3" unique_id=1823315941 groups=["rifles"] instance=ExtResource("25_5he1u")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.5, 0, 0)
+visible = false
+
+[node name="AssaultRifle_3" parent="ShopPedestal_3/ShopGun_3" unique_id=1105185468 groups=["rifles"] instance=ExtResource("26_5poiv")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.7, 0, 0)
+visible = false
+
+[node name="AssaultRifle_4" parent="ShopPedestal_3/ShopGun_3" unique_id=1322830910 groups=["rifles"] instance=ExtResource("27_2cjbq")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.5, 0, 0)
+visible = false
+
+[node name="AssaultRifle_5" parent="ShopPedestal_3/ShopGun_3" unique_id=312556556 groups=["rifles"] instance=ExtResource("28_chjal")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.5, 0, 0)
+visible = false
+
+[node name="GunPurchasePrompt_3" type="Node3D" parent="ShopPedestal_3" unique_id=1995620041 groups=["shop_prompts"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.75, 0)
+
+[node name="Square" type="MeshInstance3D" parent="ShopPedestal_3/GunPurchasePrompt_3" unique_id=398304390]
 transform = Transform3D(-1.7484555e-07, 0, 1.5, 0, 2.75, 0, -4, 0, -6.556708e-08, 0, 0, 0)
 cast_shadow = 0
 mesh = SubResource("QuadMesh_prompt")
 
-[node name="E" type="Label3D" parent="GunPedestal/GunPurchasePrompt" unique_id=182801563]
+[node name="E" type="Label3D" parent="ShopPedestal_3/GunPurchasePrompt_3" unique_id=2101213927]
 transform = Transform3D(1, 0, -5.8281852e-08, 0, 1, 0, 5.8281852e-08, 0, 1, 0, 0, 0)
 pixel_size = 0.002
 offset = Vector2(300, -300)
@@ -868,7 +1162,7 @@ modulate = Color(0, 0, 0, 1)
 text = "E to buy"
 font_size = 100
 
-[node name="Name" type="Label3D" parent="GunPedestal/GunPurchasePrompt" unique_id=1500847862]
+[node name="Name" type="Label3D" parent="ShopPedestal_3/GunPurchasePrompt_3" unique_id=753821722]
 transform = Transform3D(1, 0, 7.28523e-09, 0, 1, 0, 7.28523e-09, 0, 1.1666667, 0, 0, 0)
 pixel_size = 0.002
 offset = Vector2(0, 300)
@@ -876,10 +1170,10 @@ billboard = 1
 no_depth_test = true
 render_priority = 2
 modulate = Color(0, 0, 0, 1)
-text = "Revolver_0"
+text = "Assault Rifle"
 font_size = 120
 
-[node name="Rate" type="Label3D" parent="GunPedestal/GunPurchasePrompt" unique_id=115843606]
+[node name="Rate" type="Label3D" parent="ShopPedestal_3/GunPurchasePrompt_3" unique_id=1756561244]
 transform = Transform3D(1, 0, 7.28523e-09, 0, 1, 0, 7.28523e-09, 0, 1.1666667, 0, 0, 0)
 pixel_size = 0.002
 offset = Vector2(-300, 100)
@@ -890,7 +1184,7 @@ modulate = Color(0, 0, 0, 1)
 text = "Rate: 0s"
 font_size = 100
 
-[node name="Chance" type="Label3D" parent="GunPedestal/GunPurchasePrompt" unique_id=2130171493]
+[node name="Chance" type="Label3D" parent="ShopPedestal_3/GunPurchasePrompt_3" unique_id=1318494896]
 transform = Transform3D(1, 0, 7.28523e-09, 0, 1, 0, 7.28523e-09, 0, 1.1666667, 0, 0, 0)
 pixel_size = 0.002
 offset = Vector2(300, 100)
@@ -901,7 +1195,7 @@ modulate = Color(0, 0, 0, 1)
 text = "Chance: 0/0"
 font_size = 100
 
-[node name="Value" type="Label3D" parent="GunPedestal/GunPurchasePrompt" unique_id=1125897158]
+[node name="Value" type="Label3D" parent="ShopPedestal_3/GunPurchasePrompt_3" unique_id=1167062501]
 transform = Transform3D(1, 0, 7.28523e-09, 0, 1, 0, 7.28523e-09, 0, 1.1666667, 0, 0, 0)
 pixel_size = 0.002
 offset = Vector2(0, -100)
@@ -912,7 +1206,84 @@ modulate = Color(0, 0, 0, 1)
 text = "$0 per kill"
 font_size = 100
 
-[node name="Cost" type="Label3D" parent="GunPedestal/GunPurchasePrompt" unique_id=390792041]
+[node name="Cost" type="Label3D" parent="ShopPedestal_3/GunPurchasePrompt_3" unique_id=1611105929]
+transform = Transform3D(1, 0, 7.28523e-09, 0, 1, 0, 7.28523e-09, 0, 1.1666667, 0, 0, 0)
+pixel_size = 0.002
+offset = Vector2(-300, -300)
+billboard = 1
+no_depth_test = true
+render_priority = 2
+modulate = Color(0, 0, 0, 1)
+text = "Cost: $0"
+font_size = 100
+
+[node name="ShopPedestal_4" type="StaticBody3D" parent="." unique_id=1466865690]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 1.25, -5)
+
+[node name="GunPurchasePrompt_4" type="Node3D" parent="ShopPedestal_4" unique_id=503665989 groups=["shop_prompts"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.75, 0)
+
+[node name="Square" type="MeshInstance3D" parent="ShopPedestal_4/GunPurchasePrompt_4" unique_id=1658809304]
+transform = Transform3D(-1.7484555e-07, 0, 1.5, 0, 2.75, 0, -4, 0, -6.556708e-08, 0, 0, 0)
+cast_shadow = 0
+mesh = SubResource("QuadMesh_prompt")
+
+[node name="E" type="Label3D" parent="ShopPedestal_4/GunPurchasePrompt_4" unique_id=182801563]
+transform = Transform3D(1, 0, -5.8281852e-08, 0, 1, 0, 5.8281852e-08, 0, 1, 0, 0, 0)
+pixel_size = 0.002
+offset = Vector2(300, -300)
+billboard = 1
+no_depth_test = true
+render_priority = 2
+modulate = Color(0, 0, 0, 1)
+text = "E to buy"
+font_size = 100
+
+[node name="Name" type="Label3D" parent="ShopPedestal_4/GunPurchasePrompt_4" unique_id=1500847862]
+transform = Transform3D(1, 0, 7.28523e-09, 0, 1, 0, 7.28523e-09, 0, 1.1666667, 0, 0, 0)
+pixel_size = 0.002
+offset = Vector2(0, 300)
+billboard = 1
+no_depth_test = true
+render_priority = 2
+modulate = Color(0, 0, 0, 1)
+text = "Shotgun"
+font_size = 120
+
+[node name="Rate" type="Label3D" parent="ShopPedestal_4/GunPurchasePrompt_4" unique_id=115843606]
+transform = Transform3D(1, 0, 7.28523e-09, 0, 1, 0, 7.28523e-09, 0, 1.1666667, 0, 0, 0)
+pixel_size = 0.002
+offset = Vector2(-300, 100)
+billboard = 1
+no_depth_test = true
+render_priority = 2
+modulate = Color(0, 0, 0, 1)
+text = "Rate: 0s"
+font_size = 100
+
+[node name="Chance" type="Label3D" parent="ShopPedestal_4/GunPurchasePrompt_4" unique_id=2130171493]
+transform = Transform3D(1, 0, 7.28523e-09, 0, 1, 0, 7.28523e-09, 0, 1.1666667, 0, 0, 0)
+pixel_size = 0.002
+offset = Vector2(300, 100)
+billboard = 1
+no_depth_test = true
+render_priority = 2
+modulate = Color(0, 0, 0, 1)
+text = "Chance: 0/0"
+font_size = 100
+
+[node name="Value" type="Label3D" parent="ShopPedestal_4/GunPurchasePrompt_4" unique_id=1125897158]
+transform = Transform3D(1, 0, 7.28523e-09, 0, 1, 0, 7.28523e-09, 0, 1.1666667, 0, 0, 0)
+pixel_size = 0.002
+offset = Vector2(0, -100)
+billboard = 1
+no_depth_test = true
+render_priority = 2
+modulate = Color(0, 0, 0, 1)
+text = "$0 per kill"
+font_size = 100
+
+[node name="Cost" type="Label3D" parent="ShopPedestal_4/GunPurchasePrompt_4" unique_id=390792041]
 transform = Transform3D(1, 0, 7.28523e-09, 0, 1, 0, 7.28523e-09, 0, 1.1666667, 0, 0, 0)
 pixel_size = 0.002
 offset = Vector2(-300, -300)
@@ -934,62 +1305,143 @@ modulate = Color(0, 0, 0, 1)
 text = "Power: 0"
 font_size = 100
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="GunPedestal" unique_id=1820829043]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ShopPedestal_4" unique_id=1820829043]
 material_override = SubResource("StandardMaterial3D_choun")
 mesh = SubResource("BoxMesh_ya4ey")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="GunPedestal" unique_id=879662444]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ShopPedestal_4" unique_id=879662444]
 shape = SubResource("BoxShape3D_eb6dy")
 
-[node name="ShopGun" type="Node3D" parent="GunPedestal" unique_id=2053724034]
+[node name="ShopGun_4" type="Node3D" parent="ShopPedestal_4" unique_id=198938958]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0)
 script = ExtResource("10_ya4ey")
 
-[node name="Revolver_2" parent="GunPedestal/ShopGun" unique_id=243028696 groups=["shop_guns"] instance=ExtResource("11_eb6dy")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7514391, 0, 0)
+[node name="Shotgun_1" parent="ShopPedestal_4/ShopGun_4" unique_id=1610997494 groups=["shotguns"] instance=ExtResource("19_gqmmt")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.6, 0, 0)
 visible = false
 
-[node name="Revolver_3" parent="GunPedestal/ShopGun" unique_id=444147583 groups=["shop_guns"] instance=ExtResource("12_a8y0u")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.75, 0, 0)
+[node name="Shotgun_2" parent="ShopPedestal_4/ShopGun_4" unique_id=1013571915 groups=["shotguns"] instance=ExtResource("30_cjqg0")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.6, 0, 0)
 visible = false
 
-[node name="Revolver_4" parent="GunPedestal/ShopGun" unique_id=384517156 groups=["shop_guns"] instance=ExtResource("13_jkv2x")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
+[node name="Shotgun_3" parent="ShopPedestal_4/ShopGun_4" unique_id=735500942 groups=["shotguns"] instance=ExtResource("31_vchkt")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.6, 0, 0)
 visible = false
 
-[node name="Revolver_5" parent="GunPedestal/ShopGun" unique_id=733780769 groups=["shop_guns"] instance=ExtResource("14_jbj1t")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.75, 0, 0)
+[node name="Shotgun_5" parent="ShopPedestal_4/ShopGun_4" unique_id=898690013 groups=["shotguns"] instance=ExtResource("32_txyw0")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.75, 0, 0)
 visible = false
 
-[node name="Pistol_1" parent="GunPedestal/ShopGun" unique_id=529446050 groups=["shop_guns"] instance=ExtResource("5_0ld40")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0, 0)
+[node name="Shotgun_4" parent="ShopPedestal_4/ShopGun_4" unique_id=477895262 groups=["shotguns"] instance=ExtResource("33_vc5cj")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.9, 0, 0)
 visible = false
 
-[node name="Pistol_2" parent="GunPedestal/ShopGun" unique_id=966008722 groups=["shop_guns"] instance=ExtResource("11_gqmmt")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0, 0)
-visible = false
-
-[node name="Pistol_3" parent="GunPedestal/ShopGun" unique_id=383845282 groups=["shop_guns"] instance=ExtResource("12_yc10j")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0, 0)
-visible = false
-
-[node name="Pistol_4" parent="GunPedestal/ShopGun" unique_id=1905222532 groups=["shop_guns"] instance=ExtResource("13_jscy8")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0, 0)
-visible = false
-
-[node name="Pistol_5" parent="GunPedestal/ShopGun" unique_id=1472303791 groups=["shop_guns"] instance=ExtResource("14_pm3ni")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0, 0)
-visible = false
-
-[node name="Reroll Pedestal" type="StaticBody3D" parent="." unique_id=458154878]
+[node name="ShopPedestal_0" type="StaticBody3D" parent="." unique_id=458154878]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 1.25, 5)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Reroll Pedestal" unique_id=1015863042]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ShopPedestal_0" unique_id=1015863042]
 material_override = SubResource("StandardMaterial3D_choun")
 mesh = SubResource("BoxMesh_ya4ey")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Reroll Pedestal" unique_id=1306805044]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ShopPedestal_0" unique_id=1306805044]
 shape = SubResource("BoxShape3D_eb6dy")
+
+[node name="ShopGun_0" type="Node3D" parent="ShopPedestal_0" unique_id=2053724034]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0)
+script = ExtResource("10_ya4ey")
+
+[node name="Revolver_2" parent="ShopPedestal_0/ShopGun_0" unique_id=243028696 groups=["revolvers"] instance=ExtResource("11_eb6dy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7514391, 0, 0)
+visible = false
+
+[node name="Revolver_3" parent="ShopPedestal_0/ShopGun_0" unique_id=444147583 groups=["revolvers"] instance=ExtResource("12_a8y0u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.75, 0, 0)
+visible = false
+
+[node name="Revolver_4" parent="ShopPedestal_0/ShopGun_0" unique_id=384517156 groups=["revolvers"] instance=ExtResource("13_jkv2x")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
+visible = false
+
+[node name="Revolver_5" parent="ShopPedestal_0/ShopGun_0" unique_id=733780769 groups=["revolvers"] instance=ExtResource("14_jbj1t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.75, 0, 0)
+visible = false
+
+[node name="Revolver_1" parent="ShopPedestal_0/ShopGun_0" unique_id=28167296 groups=["revolvers"] instance=ExtResource("7_revolver")]
+visible = false
+
+[node name="GunPurchasePrompt_0" type="Node3D" parent="ShopPedestal_0" unique_id=1178100846 groups=["shop_prompts"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.75, 0)
+
+[node name="Square" type="MeshInstance3D" parent="ShopPedestal_0/GunPurchasePrompt_0" unique_id=940855202]
+transform = Transform3D(-1.7484555e-07, 0, 1.5, 0, 2.75, 0, -4, 0, -6.556708e-08, 0, 0, 0)
+cast_shadow = 0
+mesh = SubResource("QuadMesh_prompt")
+
+[node name="E" type="Label3D" parent="ShopPedestal_0/GunPurchasePrompt_0" unique_id=2068943031]
+transform = Transform3D(1, 0, -5.8281852e-08, 0, 1, 0, 5.8281852e-08, 0, 1, 0, 0, 0)
+pixel_size = 0.002
+offset = Vector2(300, -300)
+billboard = 1
+no_depth_test = true
+render_priority = 2
+modulate = Color(0, 0, 0, 1)
+text = "E to buy"
+font_size = 100
+
+[node name="Name" type="Label3D" parent="ShopPedestal_0/GunPurchasePrompt_0" unique_id=812046926]
+transform = Transform3D(1, 0, 7.28523e-09, 0, 1, 0, 7.28523e-09, 0, 1.1666667, 0, 0, 0)
+pixel_size = 0.002
+offset = Vector2(0, 300)
+billboard = 1
+no_depth_test = true
+render_priority = 2
+modulate = Color(0, 0, 0, 1)
+text = "Revolver"
+font_size = 120
+
+[node name="Rate" type="Label3D" parent="ShopPedestal_0/GunPurchasePrompt_0" unique_id=1603077897]
+transform = Transform3D(1, 0, 7.28523e-09, 0, 1, 0, 7.28523e-09, 0, 1.1666667, 0, 0, 0)
+pixel_size = 0.002
+offset = Vector2(-300, 100)
+billboard = 1
+no_depth_test = true
+render_priority = 2
+modulate = Color(0, 0, 0, 1)
+text = "Rate: 0s"
+font_size = 100
+
+[node name="Chance" type="Label3D" parent="ShopPedestal_0/GunPurchasePrompt_0" unique_id=1643674513]
+transform = Transform3D(1, 0, 7.28523e-09, 0, 1, 0, 7.28523e-09, 0, 1.1666667, 0, 0, 0)
+pixel_size = 0.002
+offset = Vector2(300, 100)
+billboard = 1
+no_depth_test = true
+render_priority = 2
+modulate = Color(0, 0, 0, 1)
+text = "Chance: 1/4"
+font_size = 100
+
+[node name="Value" type="Label3D" parent="ShopPedestal_0/GunPurchasePrompt_0" unique_id=573510591]
+transform = Transform3D(1, 0, 7.28523e-09, 0, 1, 0, 7.28523e-09, 0, 1.1666667, 0, 0, 0)
+pixel_size = 0.002
+offset = Vector2(0, -100)
+billboard = 1
+no_depth_test = true
+render_priority = 2
+modulate = Color(0, 0, 0, 1)
+text = "$0 per kill"
+font_size = 100
+
+[node name="Cost" type="Label3D" parent="ShopPedestal_0/GunPurchasePrompt_0" unique_id=1602947891]
+transform = Transform3D(1, 0, 7.28523e-09, 0, 1, 0, 7.28523e-09, 0, 1.1666667, 0, 0, 0)
+pixel_size = 0.002
+offset = Vector2(-300, -300)
+billboard = 1
+no_depth_test = true
+render_priority = 2
+modulate = Color(0, 0, 0, 1)
+text = "Cost: $0"
+font_size = 100
 
 [node name="HangingLight2" type="Node3D" parent="." unique_id=1855744161]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0044345856, -7.8937416)

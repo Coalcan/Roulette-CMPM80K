@@ -10,7 +10,7 @@ const ANIM_SIT := "HumanArmature|Man_Sitting"   # preferred sitting clip (if the
 const RUN_SPEED := 1.5   # run animation playback multiplier (1.0 = normal)
 
 # sitting (press E near a chair)
-const PROMPT_RANGE := 6.0
+const PROMPT_RANGE := 5.2
 const SIT_RANGE := 5.0
 const STAND_BACK := 1.5   # where you spawn when standing up
 const PROMPT_HEIGHT := 2.8 
@@ -36,8 +36,8 @@ const ZOOM_LERP := 10.0        # zoom smoothing
 @onready var seat_hud: Control = get_node_or_null("../SeatHUD/Panel")  # top-left controls list while seated
 @onready var gun_hud: Control = get_node_or_null("../GunHUD/Panel")  # output while holding gun
 @onready var gamble_hud: Control = get_node_or_null("../GambleHUD/Panel") # top-right controls list while seated
+@onready var locked_hud: Control = get_node_or_null("../LockedHUD/Panel") # top-right controls list while seated
 @onready var gun_hud_text: Label = get_node_or_null("../GunHUD/Panel/Label") # text for output while holding gun
-@onready var gun_purchase_prompt: Node3D = get_node_or_null("../GunPedestal/GunPurchasePrompt") # purchase prompt for new gun
 @onready var gun: Node3D = get_node_or_null("../Gun") # the revolver on the table
 
 signal player_died # signal that player died for other scripts
@@ -268,8 +268,11 @@ func _interact_event() -> void:
 			_sit_down(target)
 			return
 	
-	if global_position.distance_to(gun_purchase_prompt.global_position) < PROMPT_RANGE:
-		purchase_gun.emit()
+	for node in get_tree().get_nodes_in_group("shop_prompts"):
+		if node is Node3D:
+			var d := global_position.distance_to(node.global_position)
+			if d < PROMPT_RANGE:
+				purchase_gun.emit(int(node.name.right(1)))
 
 func _sit_down(target : Node3D) -> void:
 	is_sitting = true
@@ -298,6 +301,8 @@ func _sit_down(target : Node3D) -> void:
 		seat_hud.visible = true
 		if gamble_hud and gambleUnlocked:
 			gamble_hud.visible = true
+		elif locked_hud and not gambleUnlocked:
+			locked_hud.visible = true
 
 func _capture_arm_base() -> void:
 	arm_base.clear()
@@ -467,8 +472,10 @@ func _stand_up() -> void:
 		seat_hud.visible = false
 	if gun_hud and not game_over:
 		gun_hud.visible = false
-	if gamble_hud and gambleUnlocked:
+	if gamble_hud:
 		gamble_hud.visible = false
+	if locked_hud:
+		locked_hud.visible = false
 	# Put the gun back on the table before getting up.
 	if has_gun and gun:
 		gun.reparent(get_parent(), false)
@@ -537,7 +544,7 @@ func _physics_process(delta: float) -> void:
 
 func _update_prompts() -> void:
 	_update_sit_prompt()
-	_update_gun_purchase_prompt()
+	_update_gun_purchase_prompts()
 
 # Floating E popup
 func _update_sit_prompt() -> void:
@@ -553,13 +560,11 @@ func _update_sit_prompt() -> void:
 	else:
 		sit_prompt.visible = false
 
-func _update_gun_purchase_prompt() -> void:
-	if gun_purchase_prompt == null:
-		return
-	if global_position.distance_to(gun_purchase_prompt.global_position) < PROMPT_RANGE:
-		gun_purchase_prompt.visible = true
-	else:
-		gun_purchase_prompt.visible = false
+func _update_gun_purchase_prompts() -> void:
+	for node in get_tree().get_nodes_in_group("shop_prompts"):
+		if node is Node3D:
+			var d := global_position.distance_to(node.global_position)
+			node.visible = d < PROMPT_RANGE
 
 # camera positiong for sitting
 func _update_camera(delta: float) -> void:
@@ -596,8 +601,8 @@ func _play_anim(anim_name: String, speed := 1.0) -> void:
 func _on_update_gun_values(rate, chance, power) -> void:
 	RAISE_TIME = rate/2
 	HOLD_TIME = rate/2
-	LIVE = chance[0]
-	CHAMBERS = chance[1]
+	LIVE = 1
+	CHAMBERS = chance
 	death_launch_speed = power   # better revolvers fling the body farther on death
 
 func _on_unlock_gamble() -> void:
