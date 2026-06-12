@@ -923,6 +923,17 @@ modulate = Color(0, 0, 0, 1)
 text = "Cost: $0"
 font_size = 100
 
+[node name="Power" type="Label3D" parent="GunPedestal/GunPurchasePrompt" unique_id=390792042]
+transform = Transform3D(1, 0, 7.28523e-09, 0, 1, 0, 7.28523e-09, 0, 1.1666667, 0, 0, 0)
+pixel_size = 0.002
+offset = Vector2(300, -300)
+billboard = 1
+no_depth_test = true
+render_priority = 2
+modulate = Color(0, 0, 0, 1)
+text = "Power: 0"
+font_size = 100
+
 [node name="MeshInstance3D" type="MeshInstance3D" parent="GunPedestal" unique_id=1820829043]
 material_override = SubResource("StandardMaterial3D_choun")
 mesh = SubResource("BoxMesh_ya4ey")

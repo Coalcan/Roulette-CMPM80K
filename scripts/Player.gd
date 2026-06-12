@@ -76,6 +76,8 @@ var zoom := 1.0
 @export var gun_grip_rotation_deg := Vector3.ZERO
 @export var gun_grip_scale := 1.0
 @export var muzzle_offset := Vector3(0, 0, -0.5)
+
+
 @export var death_launch_speed := 20
 @export var death_launch_up := 0.35 
 @export var death_launch_sideways := 1.0  
@@ -591,11 +593,12 @@ func _play_anim(anim_name: String, speed := 1.0) -> void:
 	current_anim = anim_name
 	anim_player.play(anim_name, -1, speed)
 
-func _on_update_gun_values(rate, chance) -> void:
+func _on_update_gun_values(rate, chance, power) -> void:
 	RAISE_TIME = rate/2
 	HOLD_TIME = rate/2
 	LIVE = chance[0]
 	CHAMBERS = chance[1]
+	death_launch_speed = power   # better revolvers fling the body farther on death
 
 func _on_unlock_gamble() -> void:
 	gambleUnlocked = true

@@ -12,6 +12,7 @@ var gambleUnlock := false
 @onready var gun_purchase_prompt_rate = get_node_or_null("GunPedestal/GunPurchasePrompt/Rate")
 @onready var gun_purchase_prompt_chance = get_node_or_null("GunPedestal/GunPurchasePrompt/Chance")
 @onready var gun_purchase_prompt_cost = get_node_or_null("GunPedestal/GunPurchasePrompt/Cost")
+@onready var gun_purchase_prompt_power = get_node_or_null("GunPedestal/GunPurchasePrompt/Power")
 @onready var death_screen_deaths = get_node_or_null("DeathScreen/Deaths")
 @onready var death_screen_earnings = get_node_or_null("DeathScreen/Earnings")
 
@@ -24,6 +25,9 @@ const gunProgression = ["Revolver_1", "Revolver_2", "Revolver_3", "Revolver_4", 
 const gunValue = [1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
 const gunRate = [1.0, 1.0, 1.0, 1.0, 1.0, 0.8, 0.8, 0.8, 0.8, 0.8]
 const gunChance = [[1,6], [1,6], [1,6], [1,6], [1,6], [1,5], [1,5], [1,5], [1,5], [1,5]]
+# Death knockback (launch speed) per gun. Revolver_1..5 as requested; the Pistol_1..5
+# values are placeholders that keep climbing — tweak to taste.
+const gunPower = [20, 40, 60, 80, 300, 400, 500, 600, 800, 1000]
 
 const MISS_WIN_BONUS := 0.5
 const HIT_WIN_BONUS := 2.0
@@ -71,7 +75,9 @@ func _update_gun_pedestal() -> void:
 			gun_purchase_prompt_chance.visible = false
 		if gun_purchase_prompt_cost:
 			gun_purchase_prompt_cost.visible = false
-			
+		if gun_purchase_prompt_power:
+			gun_purchase_prompt_power.visible = false
+
 		return
 		
 	var gunName = gunProgression[nextGun]
@@ -88,12 +94,15 @@ func _update_gun_pedestal() -> void:
 		gun_purchase_prompt_chance.text = "Chance: " + str(gunChance[nextGun][0]) + "/" + str(gunChance[nextGun][1])
 	if gun_purchase_prompt_cost:
 		gun_purchase_prompt_cost.text = "Cost: $" + str(_get_gun_cost(currentGun))
+	if gun_purchase_prompt_power:
+		gun_purchase_prompt_power.visible = true
+		gun_purchase_prompt_power.text = "Power: " + str(gunPower[nextGun])
 
 func _update_gun() -> void:
 	var gunName = gunProgression[currentGun]
 	for node in get_tree().get_nodes_in_group("table_guns"):
 		node.visible = node.name == gunName
-	updateGunValues.emit(gunRate[currentGun], gunChance[currentGun])
+	updateGunValues.emit(gunRate[currentGun], gunChance[currentGun], gunPower[currentGun])
 	
 func _on_player_purchase_gun() -> void:
 	if (cash < _get_gun_cost(currentGun) or currentGun == gunProgression.size()-1):
