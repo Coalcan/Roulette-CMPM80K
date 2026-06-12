@@ -76,13 +76,10 @@ var zoom := 1.0
 @export var gun_grip_rotation_deg := Vector3.ZERO
 @export var gun_grip_scale := 1.0
 @export var muzzle_offset := Vector3(0, 0, -0.5)
-# Gunshot ragdoll launch on death. The whole body is thrown at death_launch_speed
-# (m/s) — every bone is impulsed by mass * speed so the body weight doesn't matter —
-# plus an extra whip on the head. Flip death_launch_sideways if he flies the wrong way.
-@export var death_launch_speed := 20      # how fast the whole body is hurled (m/s)
-@export var death_launch_up := 0.35        # upward tilt of the launch (0 = flat shove)
-@export var death_launch_sideways := 1.0   # which way along his side; flip the sign if wrong
-@export var head_whip := 10               # extra impulse on the head for the neck snap
+@export var death_launch_speed := 20
+@export var death_launch_up := 0.35 
+@export var death_launch_sideways := 1.0  
+@export var head_whip := 10 
 
 const HAND_BONE := "MiddleHand.R"
 const ARM_BONES := ["UpperArm.L", "LowerArm.L", "UpperArm.R", "LowerArm.R", "MiddleHand.R"]
