@@ -14,3 +14,11 @@ to boot up godot engine. It wont lag out your machine
 assets/ = imported raw assets (models, textures, audio) — stuff that comes from outside
 scenes/ = .tscn files you author (Player, Level, UI, etc.)
 scripts/ = .gd files
+
+
+
+
+
+
+Credits:
+Dining Set by CMHT Oculus [CC-BY] via Poly Pizza

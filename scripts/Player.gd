@@ -10,14 +10,15 @@ const ANIM_SIT := "HumanArmature|Man_Sitting"   # preferred sitting clip (if the
 const RUN_SPEED := 1.5   # run animation playback multiplier (1.0 = normal)
 
 # sitting (press E near a chair)
-const PROMPT_RANGE := 6.0    # how close to a prompt you must be to see it
-const SIT_RANGE := 5.0		# how close to a chair's sit point you must be to sit
-const SIT_PITCH := -0.6   # camera tilt while seated, so the view looks down at the table
-const STAND_BACK := 1.5   # how far you step away from the table when standing up
-const PROMPT_HEIGHT := 2.8  # how high above the chair the "press E" popup floats
-# Seated camera: an over-the-head view so you can see your own body/hands and the table.
-const SIT_VIEW_HEIGHT := 4.0  # camera height above the seated body origin
-const SIT_VIEW_BACK := 2.0    # how far the camera sits back from the head, to keep your body in frame
+const PROMPT_RANGE := 6.0
+const SIT_RANGE := 5.0
+const STAND_BACK := 1.5   # where you spawn when standing up
+const PROMPT_HEIGHT := 2.8 
+
+# sitting camera pos.
+const SIT_PITCH := -0.6   # camera tilt while seated
+const SIT_VIEW_HEIGHT := 4.0  # camera height above player
+const SIT_VIEW_BACK := 2.0    # camera back away from player
 
 # camera degrees of freedom, right click and scroll wheel input min/max
 const PIVOT_HEIGHT := 4      # point the camera orbits around (head height)
@@ -43,47 +44,51 @@ signal player_died # signal that player died for other scripts
 signal purchase_gun # signal to purchase new gun
 signal gun_shoot # signal that player shot gun (for gamble)
 
+
+
+# camera pos. and global vars on start
+var cam_yaw := PI
+var cam_pitch := -0.35
+
+var is_sitting := false
+var sit_anim := ""        
+
 var current_anim := ""
 var zoom_target := 1.0         # 1.0 = third person, 0.0 = first person
 var zoom := 1.0
-var cam_yaw := PI              # start looking +Z (behind the character)
-var cam_pitch := -0.35         # start tilted slightly down
 
-var is_sitting := false        # true while seated in a chair
-var sit_anim := ""             # resolved sitting animation name ("" if the model has none)
-
-# --- Seated arm pose (degrees, layered on the frozen sitting pose) -------------
-# These are starting guesses. Tune them live: run, sit, then in the Remote scene
-# tree pick Player and adjust these until the forearms rest on the table. If an
-# arm bends the wrong way, flip a sign or move the angle to a different axis.
+# arm pose seated
 @export var arm_pose_enabled := true
 @export var left_upperarm_deg := Vector3(0, 0, -20)
 @export var left_lowerarm_deg := Vector3(20, 70, -10)
-# Right arm bones mirror the left (Y and Z negated). X is nudged down from 20 to
-# lift the right hand back up out of the table surface.
 @export var right_upperarm_deg := Vector3(0, 0, 10)
 @export var right_lowerarm_deg := Vector3(50, -65, 20)
-# Right arm raised with the gun at the temple (snapped to on pickup). Starts equal
-# to the table pose; raise these toward the head by tuning live.
+
+# gun to head pose
 @export var right_upperarm_head_deg := Vector3(30, 0, 0)
 @export var right_lowerarm_head_deg := Vector3(-10, -80, -120)
-# Right wrist (MiddleHand.R). Table pose is neutral; tweak the head one so the gun
-# points naturally at the temple.
 @export var right_hand_deg := Vector3(0, 0, 0)
 @export var right_hand_head_deg := Vector3(0, 0, -30)
-@export var debug_hold_at_head := false   # freeze the arm at the head pose to tune the angles
+@export var debug_hold_at_head := false
 
-# --- Gun grip (where the revolver sits in the right hand) ----------------------
+# --- Gun grip, gun position in hand
 @export var gun_grip_position := Vector3.ZERO
 @export var gun_grip_rotation_deg := Vector3.ZERO
-@export var gun_grip_scale := 0.01   # gun is scaled to this in-hand (its table scale is restored on drop)
-@export var muzzle_offset := Vector3(0, 0, -0.5)   # where the smoke puff spawns, relative to the right hand
+@export var gun_grip_scale := 1.0
+@export var muzzle_offset := Vector3(0, 0, -0.5)
+# Gunshot ragdoll launch on death. The whole body is thrown at death_launch_speed
+# (m/s) — every bone is impulsed by mass * speed so the body weight doesn't matter —
+# plus an extra whip on the head. Flip death_launch_sideways if he flies the wrong way.
+@export var death_launch_speed := 20      # how fast the whole body is hurled (m/s)
+@export var death_launch_up := 0.35        # upward tilt of the launch (0 = flat shove)
+@export var death_launch_sideways := 1.0   # which way along his side; flip the sign if wrong
+@export var head_whip := 10               # extra impulse on the head for the neck snap
 
 const HAND_BONE := "MiddleHand.R"
 const ARM_BONES := ["UpperArm.L", "LowerArm.L", "UpperArm.R", "LowerArm.R", "MiddleHand.R"]
 
 var skeleton: Skeleton3D
-var bone_sim: PhysicalBoneSimulator3D   # ragdoll simulator (Godot 4.4+); inactive until death
+var bone_sim: PhysicalBoneSimulator3D   # ragdoll simulator, MESHES ARE FUCKED
 var arm_bone_idx := {}         # bone name -> index
 var arm_base := {}             # bone name -> sitting-pose rotation captured on sit
 var hand_holder: Node3D        # follows the right hand bone; the gun parents here when held
@@ -91,7 +96,10 @@ var gun_home: Transform3D      # the gun's resting transform on the table
 var has_gun := false
 var muzzle_smoke: CPUParticles3D   # puff emitted when the gun actually fires
 
-# --- Russian-roulette sequence -------------------------------------------------
+
+
+
+#Roulette seq.
 var LIVE := 1
 var CHAMBERS := 6
 var RAISE_TIME := 0.5   # seconds to bring the gun up to the temple (and back down)
@@ -116,6 +124,8 @@ var game_over := false
 
 
 
+# Player Functions
+
 func _ready() -> void:
 	randomize()
 	_resolve_sit_anim()
@@ -127,15 +137,10 @@ func _ready() -> void:
 	if gun:
 		gun_home = gun.global_transform
 
-
-# Cache the arm bones and attach a holder node to the right hand bone (the gun
-# parents under it when picked up, so it follows the hand automatically).
 func _setup_skeleton() -> void:
 	skeleton = model.find_child("Skeleton3D", true, false) as Skeleton3D
 	if skeleton == null:
 		return
-	# The PhysicalBoneSimulator3D is created "active", which makes it override the
-	# animation every frame (breaks walking). Keep it off until we ragdoll on death.
 	bone_sim = skeleton.find_child("PhysicalBoneSimulator3D", true, false) as PhysicalBoneSimulator3D
 	if bone_sim:
 		bone_sim.active = false
@@ -147,14 +152,10 @@ func _setup_skeleton() -> void:
 		skeleton.add_child(attach)
 		hand_holder = Node3D.new()
 		attach.add_child(hand_holder)
-	# Muzzle smoke lives on the Player (not the hand) so the puff stays put in the
-	# world when fired instead of riding the death animation.
 	muzzle_smoke = _make_muzzle_smoke()
 	add_child(muzzle_smoke)
 
-
-# A one-shot grey smoke burst (CPUParticles3D works on every renderer, including
-# Compatibility). Tune the spawn point with muzzle_offset; sizes are below.
+# init CPUParticles params
 func _make_muzzle_smoke() -> CPUParticles3D:
 	var p := CPUParticles3D.new()
 	p.emitting = false
@@ -188,28 +189,22 @@ func _make_muzzle_smoke() -> CPUParticles3D:
 	p.mesh = quad
 	return p
 
-
 func _emit_muzzle_smoke() -> void:
 	if muzzle_smoke == null:
 		push_warning("muzzle_smoke is null - particle creation failed")
 		return
 	if hand_holder == null:
 		return
-	# orthonormalized() keeps the hand's position + rotation but strips the bone's
-	# (large) scale, so muzzle_offset stays in world units instead of being flung away.
+
 	muzzle_smoke.global_position = hand_holder.global_transform.orthonormalized() * muzzle_offset
 	muzzle_smoke.restart()
 	muzzle_smoke.emitting = true
 	print("muzzle smoke fired at ", muzzle_smoke.global_position)
 
-
 func _first_in_group(group: String) -> Node3D:
 	var nodes := get_tree().get_nodes_in_group(group)
 	return nodes[0] as Node3D if nodes.size() > 0 else null
 
-
-# Use the built-in sitting clip if it exists; otherwise fall back to any animation
-# whose name mentions "sit". Leaves sit_anim as "" if the model has none.
 func _resolve_sit_anim() -> void:
 	if not anim_player:
 		return
@@ -220,7 +215,6 @@ func _resolve_sit_anim() -> void:
 		if anim_name.to_lower().contains("sit"):
 			sit_anim = anim_name
 			return
-
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not game_over:
@@ -254,12 +248,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		match event.button_index:
 			MOUSE_BUTTON_WHEEL_UP:
-				# Locked to first person while seated: ignore zoom.
-				if not is_sitting:
-					zoom_target = clampf(zoom_target - ZOOM_STEP, 0.0, 1.0)
+				zoom_target = clampf(zoom_target - ZOOM_STEP, 0.0, 1.0)
 			MOUSE_BUTTON_WHEEL_DOWN:
-				if not is_sitting:
-					zoom_target = clampf(zoom_target + ZOOM_STEP, 0.0, 1.0)
+				zoom_target = clampf(zoom_target + ZOOM_STEP, 0.0, 1.0)
 			MOUSE_BUTTON_RIGHT:
 				# JUUUUST LIKE ROBLOX
 				Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if event.pressed else Input.MOUSE_MODE_VISIBLE
@@ -309,9 +300,6 @@ func _sit_down(target : Node3D) -> void:
 		if gamble_hud and gambleUnlocked:
 			gamble_hud.visible = true
 
-
-# Remember the sitting-pose rotation of each arm bone so the table pose can be
-# applied as an offset on top of it.
 func _capture_arm_base() -> void:
 	arm_base.clear()
 	if skeleton == null:
@@ -320,7 +308,6 @@ func _capture_arm_base() -> void:
 		var idx: int = arm_bone_idx.get(b, -1)
 		if idx != -1:
 			arm_base[b] = skeleton.get_bone_pose_rotation(idx)
-
 
 func _apply_seated_arms() -> void:
 	if not arm_pose_enabled or skeleton == null:
@@ -335,7 +322,6 @@ func _apply_seated_arms() -> void:
 	_set_arm_pose("LowerArm.R", right_lowerarm_deg.lerp(right_lowerarm_head_deg, t))
 	_set_arm_pose("MiddleHand.R", right_hand_deg.lerp(right_hand_head_deg, t))
 
-
 func _set_arm_pose(bone_name: String, deg: Vector3) -> void:
 	var idx: int = arm_bone_idx.get(bone_name, -1)
 	if idx == -1:
@@ -344,8 +330,7 @@ func _set_arm_pose(bone_name: String, deg: Vector3) -> void:
 	var offset := Quaternion.from_euler(Vector3(deg_to_rad(deg.x), deg_to_rad(deg.y), deg_to_rad(deg.z)))
 	skeleton.set_bone_pose_rotation(idx, base * offset)
 
-
-# --- Russian-roulette loop: pick up (F) -> spin (R) -> trigger (Space) ----------
+# Russian-roulette loop
 func _try_pickup_gun() -> void:
 	if not is_sitting or has_gun or gun == null or hand_holder == null:
 		return
@@ -395,13 +380,11 @@ func _spin_barrel() -> void:
 	if gun_hud and gun_hud_text:
 		gun_hud_text.text = "You give the cylinder a spin... it rattles to a stop."
 
-
 func _shoot() -> void:
 	if not has_gun or gun_seq != GunSeq.IDLE:
 		return
 	gun_seq = GunSeq.HOLD
 	seq_timer = HOLD_TIME
-
 
 # Counts down the suspense hold, then fires. Called every frame while seated.
 func _update_gun_sequence(delta: float) -> void:
@@ -409,7 +392,6 @@ func _update_gun_sequence(delta: float) -> void:
 		seq_timer -= delta
 		if seq_timer <= 0.0:
 			_fire()
-
 
 func _fire() -> void:
 	var is_live := current_chamber == loaded_chamber
@@ -439,22 +421,36 @@ func _fire() -> void:
 		gun_seq = GunSeq.IDLE   # stay at the head, ready to spin/shoot again
 	WAGER = 0
 
-
+# Death animation and reset behavior
 func _die() -> void:
 	player_died.emit()
 	gun_seq = GunSeq.DEAD
-	# NOTE: physics ragdoll doesn't work on this model — its skeleton carries a large
-	# baked scale (same reason gun_grip_scale is 0.01), and Godot can't simulate
-	# PhysicalBone3D under a scaled skeleton (the body tears apart / collapses). So we
-	# play the death clip instead. The PhysicalBoneSimulator3D is kept inactive in
-	# _setup_skeleton so it doesn't override the normal animations.
-	if anim_player and anim_player.has_animation("HumanArmature|Man_Death"):
-		current_anim = "HumanArmature|Man_Death"
-		anim_player.play("HumanArmature|Man_Death")
+
+	# Ragdoll on death
+	if bone_sim:
+		bone_sim.active = true
+		bone_sim.physical_bones_start_simulation()
+		_kick_head()   # gunshot impulse
 	await get_tree().create_timer(3.0).timeout
-	if gun_seq == GunSeq.DEAD:   # still dead (didn't manually stand up)
+	if gun_seq == GunSeq.DEAD:   
 		raise_amount = 0.0
-		_stand_up()   # reset: drop gun, get up, back to idle
+		_stand_up()
+
+
+# Impulse to head, Launch body
+# launch velocity (impulse = mass * speed)
+func _kick_head() -> void:
+	await get_tree().physics_frame   # wait a frame so the simulated bodies exist
+	if bone_sim == null:
+		return
+	var side := model.global_transform.basis.x.normalized() * death_launch_sideways
+	var dir := (side + Vector3.UP * death_launch_up).normalized()
+	for child in bone_sim.get_children():
+		if child is PhysicalBone3D:
+			child.apply_central_impulse(dir * death_launch_speed * child.mass)
+	var head := bone_sim.get_node_or_null("Head") as PhysicalBone3D
+	if head:
+		head.apply_central_impulse(dir * head_whip)
 
 
 func _shoot_state_reset() -> void:
@@ -462,8 +458,12 @@ func _shoot_state_reset() -> void:
 	raise_amount = 0.0
 	seq_timer = 0.0
 
-
 func _stand_up() -> void:
+	# If we were ragdolling, stop the sim and deactivate it so the AnimationPlayer
+	# drives the skeleton again (otherwise the body stays flopped after standing).
+	if bone_sim and bone_sim.active:
+		bone_sim.physical_bones_stop_simulation()
+		bone_sim.active = false
 	is_sitting = false
 	_shoot_state_reset()
 	if seat_hud:
@@ -487,7 +487,6 @@ func _stand_up() -> void:
 	current_anim = ""          # force the locomotion animation to replay next frame (also unpauses it)
 	_play_anim(ANIM_IDLE)
 
-
 # Nearest chair sit point within SIT_RANGE, or null if there isn't one close enough.
 func _nearest_sit_point() -> Node3D:
 	var best: Node3D = null
@@ -499,7 +498,6 @@ func _nearest_sit_point() -> Node3D:
 				best_dist = d
 				best = node
 	return best
-
 
 func _physics_process(delta: float) -> void:
 	if is_sitting:
@@ -544,8 +542,7 @@ func _update_prompts() -> void:
 	_update_sit_prompt()
 	_update_gun_purchase_prompt()
 
-# Float the "press E" popup above the nearest chair when one is in range,
-# and hide it while seated or when no chair is close.
+# Floating E popup
 func _update_sit_prompt() -> void:
 	if sit_prompt == null:
 		return
@@ -567,10 +564,8 @@ func _update_gun_purchase_prompt() -> void:
 	else:
 		gun_purchase_prompt.visible = false
 
-
+# camera positiong for sitting
 func _update_camera(delta: float) -> void:
-	# While seated: keep the body visible and frame it (and the table) from just
-	# above and behind the head, looking down. Lets you see your hands at the table.
 	if is_sitting:
 		var sit_pivot := global_position + Vector3(0, SIT_VIEW_HEIGHT, 0)
 		var sit_basis := Basis.from_euler(Vector3(cam_pitch, cam_yaw, 0))
@@ -593,7 +588,6 @@ func _update_camera(delta: float) -> void:
 	# solution: once distance <= 0.5, point cam_yaw toward the model's facing so FP tracks where you're walking
 	model.visible = distance > 0.5
 
-
 func _play_anim(anim_name: String, speed := 1.0) -> void:
 	if not anim_player or current_anim == anim_name:
 		return
@@ -602,13 +596,11 @@ func _play_anim(anim_name: String, speed := 1.0) -> void:
 	current_anim = anim_name
 	anim_player.play(anim_name, -1, speed)
 
-
 func _on_update_gun_values(rate, chance) -> void:
 	RAISE_TIME = rate/2
 	HOLD_TIME = rate/2
 	LIVE = chance[0]
 	CHAMBERS = chance[1]
-
 
 func _on_unlock_gamble() -> void:
 	gambleUnlocked = true
@@ -621,7 +613,6 @@ func _on_unlock_gamble() -> void:
 		await get_tree().create_timer(3.0).timeout
 		gun_hud.visible = false
 		game_over = false
-
 
 func _on_game_over() -> void:
 	game_over = true
