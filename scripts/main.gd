@@ -29,32 +29,32 @@ const revolver_rate = [1.0, 1.0, 1.0, 0.9, 0.8]
 const revolver_chance = [6, 6, 6, 6, 6]
 const revolver_cost = [0, 5, 10, 20, 40]
 # Death knockback (launch speed) per upgrade level. Revolver values as requested.
-const revolver_power = [20, 40, 60, 80, 300]
+const revolver_power = [10,20,30,40,50]
 
 const pistol_value = [5, 8, 13, 21, 34]
 const pistol_rate = [1.2, 1.2, 1.1, 1.0, 0.9]
 const pistol_chance = [5, 5, 5, 5, 5]
 const pistol_cost = [30, 60, 120, 240, 480]
-const pistol_power = [400, 500, 600, 800, 1000]
+const pistol_power = [5,10,15,20,50]
 
 const smg_value = [3, 8, 21, 55, 144]
 const smg_rate = [0.25, 0.25, 0.25, 0.25, 0.2]
 const smg_chance = [20, 20, 18, 16, 12]
 const smg_cost = [100, 200, 400, 800, 1600]
 # Placeholder power for the new categories — keeps climbing, tweak to taste.
-const smg_power = [1200, 1400, 1600, 1800, 2000]
+const smg_power = [10,20,30,40,50]
 
 const ar_value = [34, 55, 89, 144, 233]
 const ar_rate = [0.5, 0.5, 0.5, 0.45, 0.4]
 const ar_chance = [15, 15, 12, 10, 8]
 const ar_cost = [500, 1000, 2000, 4000, 8000]
-const ar_power = [2500, 3000, 3500, 4000, 5000]
+const ar_power = [50,60,70,80,100]
 
 const shotgun_value = [144, 233, 377, 610, 987]
 const shotgun_rate = [2.0, 1.8, 1.6, 1.4, 1.2]
 const shotgun_chance = [4, 4, 4, 3, 2]
 const shotgun_cost = [2500, 5000, 10000, 20000, 40000]
-const shotgun_power = [6000, 7000, 8000, 9000, 10000]
+const shotgun_power = [100,200,300,400,500]
 
 var gun_info = [
 	[revolver_value, revolver_rate, revolver_chance, revolver_cost, 0, revolver_power],
